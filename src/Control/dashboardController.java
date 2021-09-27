@@ -24,7 +24,6 @@ public class dashboardController implements Initializable {
     private Scene scene;
     private Parent root;
 
-    public static Schedule schedule = new Schedule();
 
     @FXML private TableView<Appointment> appointmentTable;
 
@@ -93,35 +92,6 @@ public class dashboardController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/project", "root", "root");
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM appointments");
-
-
-            while (resultSet.next()) {
-                int appt_id = resultSet.getInt("Appointment_ID");
-                Timestamp start = resultSet.getTimestamp("Start");
-                Timestamp end = resultSet.getTimestamp("End");
-                String title = resultSet.getString("Title");
-                String type = resultSet.getString("Type");
-                String description = resultSet.getString("Description");
-                String location = resultSet.getString("Location");
-                int cust_id = resultSet.getInt("Customer_ID");
-                Appointment appointment = new Appointment(appt_id, start, end, title, type, description, location, cust_id);
-                schedule.addAppointment(appointment);
-
-            }
-            connection.close();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
-//        For testing what is actually stored in the schedule.
-//        for (Appointment appointment : schedule.getAppointments()) {
-//            // Do something
-//        }
 
         apptIdCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("appt_id"));
         startCol.setCellValueFactory(new PropertyValueFactory<Appointment, Timestamp>("start"));
@@ -132,7 +102,7 @@ public class dashboardController implements Initializable {
         locCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("location"));
         custIdCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("cust_id"));
 
-        appointmentTable.setItems(schedule.getAppointments());
+        appointmentTable.setItems(Main.schedule.getAppointments());
 
     }
 }
