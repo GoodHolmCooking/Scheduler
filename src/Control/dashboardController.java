@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 public class dashboardController implements Initializable {
@@ -32,9 +33,9 @@ public class dashboardController implements Initializable {
 
     @FXML private TableColumn<Appointment, Integer> apptIdCol;
 
-    @FXML private TableColumn<Appointment, Date> startCol;
+    @FXML private TableColumn<Appointment, Timestamp> startCol;
 
-    @FXML private TableColumn<Appointment, Date> endCol;
+    @FXML private TableColumn<Appointment, Timestamp> endCol;
 
     @FXML private TableColumn<Appointment, String> titleCol;
 
@@ -101,8 +102,8 @@ public class dashboardController implements Initializable {
 
             while (resultSet.next()) {
                 int appt_id = resultSet.getInt("Appointment_ID");
-                Date start = resultSet.getDate("Start");
-                Date end = resultSet.getDate("End");
+                Timestamp start = resultSet.getTimestamp("Start");
+                Timestamp end = resultSet.getTimestamp("End");
                 String title = resultSet.getString("Title");
                 String type = resultSet.getString("Type");
                 String description = resultSet.getString("Description");
@@ -124,8 +125,8 @@ public class dashboardController implements Initializable {
 //        }
 
         apptIdCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("appt_id"));
-        startCol.setCellValueFactory(new PropertyValueFactory<Appointment, Date>("start"));
-        endCol.setCellValueFactory(new PropertyValueFactory<Appointment, Date>("end"));
+        startCol.setCellValueFactory(new PropertyValueFactory<Appointment, Timestamp>("start"));
+        endCol.setCellValueFactory(new PropertyValueFactory<Appointment, Timestamp>("end"));
         titleCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("title"));
         typeCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("type"));
         descrCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("description"));
