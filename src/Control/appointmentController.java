@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -17,6 +18,9 @@ public class appointmentController implements Initializable {
     private Stage stage;
     private Scene scene;
     private Parent root;
+
+    @FXML private TextField apptField;
+
 
     public void onSave(ActionEvent event) throws Exception {
 
@@ -39,6 +43,7 @@ public class appointmentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Appointment window initialized.");
+        apptField.setText(String.valueOf(dashboardController.schedule.getCurrentId()));
     }
 }
 

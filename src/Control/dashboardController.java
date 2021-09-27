@@ -17,7 +17,6 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 public class dashboardController implements Initializable {
@@ -25,7 +24,7 @@ public class dashboardController implements Initializable {
     private Scene scene;
     private Parent root;
 
-    public Schedule schedule = new Schedule();
+    public static Schedule schedule = new Schedule();
 
     @FXML private TableView<Appointment> appointmentTable;
 

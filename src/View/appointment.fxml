@@ -39,7 +39,7 @@
             <Label text="End Date and Time" GridPane.rowIndex="7" />
             <Label text="Customer ID" GridPane.rowIndex="8" />
             <Label text="User ID" GridPane.rowIndex="9" />
-            <TextField disable="true" GridPane.columnIndex="1" />
+            <TextField fx:id="apptField" disable="true" GridPane.columnIndex="1" />
             <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
