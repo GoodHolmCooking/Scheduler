@@ -30,6 +30,21 @@ public class dashboardController implements Initializable {
 
     @FXML private TableColumn<Appointment, String> typeCol;
 
+    @FXML private TableColumn<Appointment, Integer> apptIdCol;
+
+    @FXML private TableColumn<Appointment, Date> startCol;
+
+    @FXML private TableColumn<Appointment, Date> endCol;
+
+    @FXML private TableColumn<Appointment, String> titleCol;
+
+    @FXML private TableColumn<Appointment, String> descrCol;
+
+    @FXML private TableColumn<Appointment, String> locCol;
+
+    @FXML private TableColumn<Appointment, Integer> custIdCol;
+
+
 
     public void addAppointment(ActionEvent event) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("../View/appointment.fxml"));
@@ -81,14 +96,21 @@ public class dashboardController implements Initializable {
         try {
             Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/project", "root", "root");
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT type FROM appointments");
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM appointments");
 
 
             while (resultSet.next()) {
+                int appt_id = resultSet.getInt("Appointment_ID");
+                Date start = resultSet.getDate("Start");
+                Date end = resultSet.getDate("End");
+                String title = resultSet.getString("Title");
                 String type = resultSet.getString("Type");
-                Appointment appointment = new Appointment(type);
-
+                String description = resultSet.getString("Description");
+                String location = resultSet.getString("Location");
+                int cust_id = resultSet.getInt("Customer_ID");
+                Appointment appointment = new Appointment(appt_id, start, end, title, type, description, location, cust_id);
                 schedule.addAppointment(appointment);
+
             }
             connection.close();
         }
@@ -96,12 +118,19 @@ public class dashboardController implements Initializable {
             e.printStackTrace();
         }
 
-        for (Appointment appointment : schedule.getAppointments()) {
-            System.out.println(appointment.getType());
-        }
+//        For testing what is actually stored in the schedule.
+//        for (Appointment appointment : schedule.getAppointments()) {
+//            // Do something
+//        }
 
-
+        apptIdCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("appt_id"));
+        startCol.setCellValueFactory(new PropertyValueFactory<Appointment, Date>("start"));
+        endCol.setCellValueFactory(new PropertyValueFactory<Appointment, Date>("end"));
+        titleCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("title"));
         typeCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("type"));
+        descrCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("description"));
+        locCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("location"));
+        custIdCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("cust_id"));
 
         appointmentTable.setItems(schedule.getAppointments());
 

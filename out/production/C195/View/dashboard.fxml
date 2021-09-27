@@ -25,7 +25,14 @@
       </MenuBar>
       <TableView fx:id="appointmentTable" layoutX="52.0" layoutY="67.0" prefHeight="200.0" prefWidth="894.0">
         <columns>
+            <TableColumn fx:id="apptIdCol" prefWidth="136.0" text="Appointment_ID" />
+            <TableColumn fx:id="startCol" prefWidth="75.0" text="Start" />
+            <TableColumn fx:id="endCol" prefWidth="75.0" text="End" />
+            <TableColumn fx:id="titleCol" prefWidth="75.0" text="Title" />
             <TableColumn fx:id="typeCol" prefWidth="75.0" text="Type" />
+            <TableColumn fx:id="descrCol" prefWidth="75.0" text="Description" />
+            <TableColumn fx:id="locCol" prefWidth="75.0" text="Location" />
+            <TableColumn fx:id="custIdCol" prefWidth="129.0" text="Customer_ID" />
         </columns>
       </TableView>
       <HBox layoutX="628.0" layoutY="276.0" prefHeight="25.0" prefWidth="207.0" spacing="20.0">
