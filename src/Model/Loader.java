@@ -81,20 +81,20 @@ public class Loader {
                     "User_ID," +
                     "Contact_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-            statement.setInt(1, appt_id);
-            statement.setTimestamp(2, start);
-            statement.setTimestamp(3, end);
-            statement.setString(4, title);
-            statement.setString(5, type);
-            statement.setString(6, description);
-            statement.setString(7, location);
-            statement.setInt(8, cust_id);
-            statement.setTimestamp(9, Timestamp.valueOf("2021-09-10 13:14:10"));
-            statement.setString(10, "TestBot");
-            statement.setTimestamp(11, Timestamp.valueOf("2021-09-10 13:14:10"));
-            statement.setString(12, "TestBot");
-            statement.setInt(13, 7);
-            statement.setInt(14, 5);
+            statement.setInt(1, appt_id); // Appointment ID
+            statement.setTimestamp(2, start); // Start
+            statement.setTimestamp(3, end); // End
+            statement.setString(4, title); // Title
+            statement.setString(5, type); // Type
+            statement.setString(6, description); // Description
+            statement.setString(7, location); // Location
+            statement.setInt(8, cust_id); // Customer ID
+            statement.setTimestamp(9, Timestamp.valueOf("2021-09-10 13:14:10")); // Create Date
+            statement.setString(10, "TestBot"); // Created By
+            statement.setTimestamp(11, Timestamp.valueOf("2021-09-10 13:14:10")); // Last Update
+            statement.setString(12, "TestBot"); // Last Updated By
+            statement.setInt(13, 7); // User ID
+            statement.setInt(14, 5); // Contact ID
 
             statement.executeUpdate();
 
