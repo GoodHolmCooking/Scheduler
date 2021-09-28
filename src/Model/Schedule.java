@@ -87,4 +87,18 @@ public class Schedule {
         int current_id = highest_id + 1;
         return current_id;
     }
+
+    public boolean doesApptExist(Appointment testAppt) {
+        int id = testAppt.getAppt_id();
+        boolean apptExists = false;
+
+        for (Appointment appointment : appointments) {
+            if (id == appointment.getAppt_id()) {
+                apptExists = true;
+                break;
+            }
+        }
+
+        return apptExists;
+    }
 }

@@ -1,9 +1,6 @@
 package Control;
 
-import Model.ContactList;
-import Model.Loader;
-import Model.Schedule;
-import Model.Storage;
+import Model.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,6 +12,7 @@ public class Main extends Application {
     public static ContactList contactList = new ContactList();
     public static Loader loader = new Loader();
     public static Storage storage = new Storage();
+    public static ApptHandler apptHandler = new ApptHandler();
 
     @Override
     public void start(Stage primaryStage) throws Exception{
