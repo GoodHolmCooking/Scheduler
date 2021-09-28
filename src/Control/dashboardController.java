@@ -43,8 +43,6 @@ public class dashboardController implements Initializable {
 
     @FXML private TableColumn<Appointment, Integer> custIdCol;
 
-
-
     public void addAppointment(ActionEvent event) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("../View/appointment.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -54,7 +52,12 @@ public class dashboardController implements Initializable {
     }
 
     public void updateAppointment(ActionEvent event) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("../View/appointment.fxml"));
+        Appointment selectedAppointment = appointmentTable.getSelectionModel().getSelectedItem();
+
+        // Storage class holds the appointment ID while we switch between windows.
+        Main.storage.setAppointmentId(selectedAppointment.getAppt_id());
+
+        Parent root = FXMLLoader.load(getClass().getResource("../View/apptUpdate.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);

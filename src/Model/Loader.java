@@ -21,7 +21,11 @@ public class Loader {
                 String description = resultSet.getString("Description");
                 String location = resultSet.getString("Location");
                 int cust_id = resultSet.getInt("Customer_ID");
-                Appointment appointment = new Appointment(appt_id, start, end, title, type, description, location, cust_id);
+                int contactId = resultSet.getInt("Contact_ID");
+                Contact contact = Main.contactList.getContact(contactId);
+                int user_id = resultSet.getInt("User_ID");
+                Appointment appointment = new Appointment(appt_id, start, end, title, type, description, location,
+                        cust_id, contact, user_id);
                 Main.schedule.addAppointment(appointment);
 
             }

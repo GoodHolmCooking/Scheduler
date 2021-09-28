@@ -24,6 +24,19 @@ public class Schedule {
         appointments.remove(selectedApptIndex);
     }
 
+    public Appointment getAppointment(int desiredId) {
+        Appointment foundAppointment = null;
+        for (Appointment appointment : appointments) {
+            int currentId = appointment.getAppt_id();
+            if (currentId == desiredId) {
+                foundAppointment = appointment;
+                break;
+            }
+        }
+
+        return foundAppointment;
+    }
+
     public ObservableList<Appointment> getAppointments() {
         return appointments;
     }

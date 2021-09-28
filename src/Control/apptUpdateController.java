@@ -18,10 +18,11 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
-public class appointmentController implements Initializable {
+public class apptUpdateController implements Initializable {
     private Stage stage;
     private Scene scene;
     private Parent root;
@@ -261,9 +262,62 @@ public class appointmentController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        apptField.setText(String.valueOf(Main.schedule.getCurrentId()));
+        int id = Main.storage.getAppointmentId();
+        Appointment selectedAppointment = Main.schedule.getAppointment(id);
+
+//      Load ID
+        apptField.setText(String.valueOf(id));
+
+//        Load title
+        titleField.setText(selectedAppointment.getTitle());
+
+//        Load description
+        descrField.setText(selectedAppointment.getDescription());
+
+//        Load location
+        locField.setText(selectedAppointment.getLocation());
+
+//        Load contact
         contactBox.setItems(Main.contactList.getContacts());
-        contactBox.getSelectionModel().select(0);
+        Contact contact = selectedAppointment.getContact();
+        int index = Main.contactList.getIndex(contact);
+        contactBox.getSelectionModel().select(index);
+
+//        Load type
+        typeField.setText(selectedAppointment.getType());
+
+//        Load start date
+        Timestamp startTimeStamp = selectedAppointment.getStart();
+        LocalDateTime startDate = startTimeStamp.toLocalDateTime();
+        startDateField.setValue(LocalDate.from(startDate));
+
+//        Load start hr
+        int startHr = startTimeStamp.toLocalDateTime().getHour();
+        startHrField.setText(String.valueOf(startHr));
+
+//        Load start min
+        int startMin = startTimeStamp.toLocalDateTime().getMinute();
+        startMinField.setText(String.valueOf(startMin));
+
+//        Load end date
+        Timestamp endTimeStamp = selectedAppointment.getEnd();
+        LocalDateTime endDate = endTimeStamp.toLocalDateTime();
+        endDateField.setValue(LocalDate.from(endDate));
+
+//        Load end hr
+        int endHr = endTimeStamp.toLocalDateTime().getHour();
+        endHrField.setText(String.valueOf(endHr));
+
+//        Load end min
+        int endMin = endTimeStamp.toLocalDateTime().getMinute();
+        endMinField.setText(String.valueOf(endMin));
+
+//        Load customer id
+        customerField.setText(String.valueOf(selectedAppointment.getCust_id()));
+
+//        Load user id
+        userField.setText(String.valueOf(selectedAppointment.getUser_id()));
+
     }
 }
 
