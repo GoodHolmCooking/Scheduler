@@ -62,7 +62,13 @@ public class dashboardController implements Initializable {
     }
 
     public void deleteAppointment(ActionEvent event) {
-        System.out.println("Appointment deleted!");
+        // Remove from schedule
+        Appointment selectedAppointment = appointmentTable.getSelectionModel().getSelectedItem();
+        Main.schedule.removeAppointment(selectedAppointment);
+
+        // Remove from DB
+        Main.loader.removeAppointment(selectedAppointment);
+
     }
 
     public void addCustomer(ActionEvent event) throws Exception {

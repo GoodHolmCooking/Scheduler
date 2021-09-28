@@ -8,6 +8,22 @@ public class Schedule {
 
     public void addAppointment(Appointment appointment) { appointments.add(appointment); }
 
+    public void removeAppointment(Appointment selectedAppointment) {
+        int id = selectedAppointment.getAppt_id();
+        int loopIndex = 0;
+        int selectedApptIndex = 0;
+        for (Appointment appointment : appointments) {
+            if (appointment.getAppt_id() == id) {
+                selectedApptIndex = loopIndex;
+                break;
+            }
+
+            loopIndex += 1;
+        }
+
+        appointments.remove(selectedApptIndex);
+    }
+
     public ObservableList<Appointment> getAppointments() {
         return appointments;
     }

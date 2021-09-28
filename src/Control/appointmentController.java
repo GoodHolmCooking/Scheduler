@@ -150,7 +150,16 @@ public class appointmentController implements Initializable {
             inputValid = checkTime(startMin, "min");
         }
 
-        // Repeat as above, but with new values.
+        if (inputValid) {
+            if (endDate == null) {
+                inputValid = false;
+            }
+            // Does the meeting end after it begins? Otherwise, that's a time paradox.
+            else if (endDate.compareTo(startDate) < 0){
+                inputValid = false;
+            }
+        }
+
         if (inputValid) {
             inputValid = checkTime(endHr, "hr");
         }

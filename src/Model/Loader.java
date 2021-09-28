@@ -103,4 +103,23 @@ public class Loader {
             e.printStackTrace();
         }
     }
+
+    public void removeAppointment(Appointment appointment){
+        int appt_id = appointment.getAppt_id();
+
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/project", "root", "root");
+            PreparedStatement statement = connection.prepareStatement("DELETE FROM appointments WHERE Appointment_ID " +
+                    "= ?");
+
+            statement.setInt(1, appt_id);
+
+            statement.executeUpdate();
+
+            connection.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
