@@ -236,10 +236,10 @@ public class apptUpdateController implements Initializable {
                     , cust_id_int, contact, user_id_int);
 
             // Add this new appointment to the backend of the program.
-            Main.schedule.addAppointment(appointment);
+            Main.schedule.updateAppointment(appointment);
 
             // Add this appointment to the persistent storage in the database.
-            Main.loader.saveAppointment(appointment);
+            Main.loader.updateAppointment(appointment);
 
             // Close the window and loadup the dashboard.
             loadDashboard(event);

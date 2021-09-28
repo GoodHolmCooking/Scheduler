@@ -65,6 +65,8 @@ public class Loader {
         String description = appointment.getDescription();
         String location = appointment.getLocation();
         int cust_id = appointment.getCust_id();
+        int user_id = appointment.getUser_id();
+        int contact_id = appointment.getContact().getId();
 
         try {
             Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/project", "root", "root");
@@ -97,8 +99,8 @@ public class Loader {
             statement.setString(10, "TestBot"); // Created By
             statement.setTimestamp(11, Timestamp.valueOf("2021-09-10 13:14:10")); // Last Update
             statement.setString(12, "TestBot"); // Last Updated By
-            statement.setInt(13, 7); // User ID
-            statement.setInt(14, 5); // Contact ID
+            statement.setInt(13, user_id); // User ID
+            statement.setInt(14, contact_id); // Contact ID
 
             statement.executeUpdate();
 
@@ -108,7 +110,62 @@ public class Loader {
         }
     }
 
-    public void removeAppointment(Appointment appointment){
+    public void updateAppointment(Appointment appointment) {
+        int appt_id = appointment.getAppt_id();
+        Timestamp start = appointment.getStart();
+        Timestamp end = appointment.getEnd();
+        String title = appointment.getTitle();
+        String type = appointment.getType();
+        String description = appointment.getDescription();
+        String location = appointment.getLocation();
+        int cust_id = appointment.getCust_id();
+        int user_id = appointment.getUser_id();
+        int contact_id = appointment.getContact().getId();
+
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/project", "root", "root");
+            PreparedStatement statement = connection.prepareStatement(
+                    "UPDATE appointments " +
+                        "SET " +
+                        "Title = ?," +
+                        "Description = ?," +
+                        "Location = ?," +
+                        "Type = ?," +
+                        "Start = ?," +
+                        "End = ?," +
+                        "Create_Date = ?," +
+                        "Created_By = ?," +
+                        "Last_Update = ?," +
+                        "Last_Updated_By = ?," +
+                        "Customer_ID = ?," +
+                        "User_ID = ?," +
+                        "Contact_ID = ? WHERE " +
+                        "Appointment_ID = ?");
+
+            statement.setString(1, title); // Title
+            statement.setString(2, description); // Description
+            statement.setString(3, location); // Location
+            statement.setString(4, type); // Type
+            statement.setTimestamp(5, start); // Start
+            statement.setTimestamp(6, end); // End
+            statement.setTimestamp(7, Timestamp.valueOf("2021-09-10 13:14:10")); // Create Date
+            statement.setString(8, "TestBot"); // Created By
+            statement.setTimestamp(9, Timestamp.valueOf("2021-09-10 13:14:10")); // Last Update
+            statement.setString(10, "TestBot"); // Last Updated By
+            statement.setInt(11, cust_id); // Customer ID
+            statement.setInt(12, user_id); // User ID
+            statement.setInt(13, contact_id); // Contact ID
+            statement.setInt(14, appt_id); // Appointment ID
+
+            statement.executeUpdate();
+
+            connection.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void removeAppointment(Appointment appointment) {
         int appt_id = appointment.getAppt_id();
 
         try {

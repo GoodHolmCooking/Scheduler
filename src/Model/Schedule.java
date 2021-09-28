@@ -3,10 +3,44 @@ package Model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.sql.Timestamp;
+
 public class Schedule {
     private ObservableList<Appointment> appointments = FXCollections.observableArrayList();
 
     public void addAppointment(Appointment appointment) { appointments.add(appointment); }
+
+    public void updateAppointment(Appointment apptUpdate) {
+        int updateId = apptUpdate.getAppt_id();
+        Timestamp updateStart = apptUpdate.getStart();
+        Timestamp updateEnd = apptUpdate.getEnd();
+        String updateTitle = apptUpdate.getTitle();
+        String updateType = apptUpdate.getType();
+        String updateDescr = apptUpdate.getDescription();
+        String updateLoc = apptUpdate.getLocation();
+        int updateCustId = apptUpdate.getCust_id();
+        Contact updateContact = apptUpdate.getContact();
+        int updateUserId = apptUpdate.getUser_id();
+
+        Appointment foundAppointment = null;
+
+        for (Appointment appointment : appointments) {
+            if (appointment.getAppt_id() == updateId) {
+                foundAppointment = appointment;
+                break;
+            }
+        }
+
+        foundAppointment.setStart(updateStart);
+        foundAppointment.setEnd(updateEnd);
+        foundAppointment.setTitle(updateTitle);
+        foundAppointment.setType(updateType);
+        foundAppointment.setDescription(updateDescr);
+        foundAppointment.setLocation(updateLoc);
+        foundAppointment.setCust_id(updateCustId);
+        foundAppointment.setContact(updateContact);
+        foundAppointment.setUser_id(updateUserId);
+    }
 
     public void removeAppointment(Appointment selectedAppointment) {
         int id = selectedAppointment.getAppt_id();
