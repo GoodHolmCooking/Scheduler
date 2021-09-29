@@ -9,10 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
@@ -27,6 +24,8 @@ public class dashboardController implements Initializable {
 
 
     @FXML private TableView<Appointment> appointmentTable;
+
+
 
     @FXML private TableColumn<Appointment, String> typeCol;
 
@@ -44,12 +43,38 @@ public class dashboardController implements Initializable {
 
     @FXML private TableColumn<Appointment, Integer> custIdCol;
 
+    @FXML private TableColumn<Appointment, String> displayCol;
+
+    @FXML private RadioButton monthRadio, weekRadio;
+
     private void noSelectionWarning(String type) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeaderText(null);
         alert.setContentText(String.format("Please select an item to %s.", type));
         alert.showAndWait();
     }
+
+    public void sortByMonth(ActionEvent event) {
+        System.out.println("Sort by month run.");
+        weekRadio.setSelected(false);
+        weekRadio.setDisable(false);
+        monthRadio.setDisable(true);
+        Main.schedule.switchToMonthView();
+        displayCol.setText("Month");
+        appointmentTable.refresh();
+    }
+
+    public void sortByWeek(ActionEvent event) {
+        System.out.println("Sort by week run.");
+        monthRadio.setSelected(false);
+        monthRadio.setDisable(false);
+        weekRadio.setDisable(true);
+        Main.schedule.switchToWeekView();
+        displayCol.setText("Week");
+        appointmentTable.refresh();
+    }
+
+
 
     public void addAppointment(ActionEvent event) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("../View/appointment.fxml"));
@@ -112,13 +137,9 @@ public class dashboardController implements Initializable {
         System.out.println("Customer deleted!");
     }
 
-    public void switchView(ActionEvent event) {
-        System.out.println("View switched!");
-    }
-
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        Main.schedule.switchToMonthView();
 
         apptIdCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("appt_id"));
         startCol.setCellValueFactory(new PropertyValueFactory<Appointment, Timestamp>("start"));
@@ -128,6 +149,7 @@ public class dashboardController implements Initializable {
         descrCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("description"));
         locCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("location"));
         custIdCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("cust_id"));
+        displayCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("display"));
 
         appointmentTable.setItems(Main.schedule.getAppointments());
 

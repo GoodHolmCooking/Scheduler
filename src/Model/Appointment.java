@@ -2,6 +2,9 @@ package Model;
 
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.DateFormatSymbols;
+import java.util.Calendar;
+import java.util.Date;
 
 public class Appointment {
     private int appt_id;
@@ -14,6 +17,7 @@ public class Appointment {
     private int cust_id;
     private Contact contact;
     private int user_id;
+    private String display;
 
 
     public Appointment(int appt_id, Timestamp start, Timestamp end, String title, String type, String description,
@@ -28,6 +32,28 @@ public class Appointment {
         this.cust_id = cust_id;
         this.contact = contact;
         this.user_id = user_id;
+    }
+
+    public void displayMonth() {
+        Calendar cal = Calendar.getInstance();
+        int id = this.appt_id;
+        Date startDate = this.start;
+        cal.setTime(startDate);
+
+        int month = cal.get(Calendar.MONTH);
+        this.display = new DateFormatSymbols().getMonths()[month];
+        System.out.println("Current display is " + getDisplay());
+    }
+
+    public void displayWeek() {
+        Calendar cal = Calendar.getInstance();
+        int id = this.appt_id;
+        Date startDate = this.start;
+        cal.setTime(startDate);
+
+        int week = cal.get(Calendar.WEEK_OF_YEAR);
+        this.display = String.valueOf(week);
+        System.out.println("Current display is " + getDisplay());
     }
 
     public int getAppt_id() {
@@ -108,6 +134,14 @@ public class Appointment {
 
     public void setUser_id(int user_id) {
         this.user_id = user_id;
+    }
+
+    public String getDisplay() {
+        return display;
+    }
+
+    public void setDisplay(String display) {
+        this.display = display;
     }
 }
 

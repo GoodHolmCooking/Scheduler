@@ -101,4 +101,16 @@ public class Schedule {
 
         return apptExists;
     }
+
+    public void switchToWeekView() {
+        for (Appointment appointment : appointments) {
+            appointment.displayWeek();
+        }
+    }
+
+    public void switchToMonthView() {
+        for (Appointment appointment : appointments) {
+            appointment.displayMonth();
+        }
+    }
 }
