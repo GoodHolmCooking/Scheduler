@@ -9,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -43,6 +44,13 @@ public class dashboardController implements Initializable {
 
     @FXML private TableColumn<Appointment, Integer> custIdCol;
 
+    private void noSelectionWarning(String type) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText(null);
+        alert.setContentText(String.format("Please select an item to %s.", type));
+        alert.showAndWait();
+    }
+
     public void addAppointment(ActionEvent event) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("../View/appointment.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -52,25 +60,35 @@ public class dashboardController implements Initializable {
     }
 
     public void updateAppointment(ActionEvent event) throws Exception {
-        Appointment selectedAppointment = appointmentTable.getSelectionModel().getSelectedItem();
+        try {
+            Appointment selectedAppointment = appointmentTable.getSelectionModel().getSelectedItem();
 
-        // Storage class holds the appointment ID while we switch between windows.
-        Main.storage.setAppointmentId(selectedAppointment.getAppt_id());
+            // Storage class holds the appointment ID while we switch between windows.
+            Main.storage.setAppointmentId(selectedAppointment.getAppt_id());
 
-        Parent root = FXMLLoader.load(getClass().getResource("../View/apptUpdate.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+            Parent root = FXMLLoader.load(getClass().getResource("../View/apptUpdate.fxml"));
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
+        catch (Exception e) {
+            noSelectionWarning("update");
+        }
     }
 
     public void deleteAppointment(ActionEvent event) {
-        // Remove from schedule
-        Appointment selectedAppointment = appointmentTable.getSelectionModel().getSelectedItem();
-        Main.schedule.removeAppointment(selectedAppointment);
+        try {
+            // Remove from schedule
+            Appointment selectedAppointment = appointmentTable.getSelectionModel().getSelectedItem();
+            Main.schedule.removeAppointment(selectedAppointment);
 
-        // Remove from DB
-        Main.loader.removeAppointment(selectedAppointment);
+            // Remove from DB
+            Main.loader.removeAppointment(selectedAppointment);
+        }
+        catch (Exception e) {
+            noSelectionWarning("delete");
+        }
 
     }
 
