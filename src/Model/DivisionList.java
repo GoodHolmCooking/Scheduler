@@ -10,11 +10,13 @@ public class DivisionList {
         divisions.add(division);
     }
 
-    public ObservableList<String> getDivisionNames() {
+    public ObservableList<String> getDivisionNames(int id) {
         ObservableList<String> divisionNames = FXCollections.observableArrayList();
         for (Division division : divisions) {
-            String name = division.getName();
-            divisionNames.add(name);
+            if (division.getCountry_id() == id) {
+                String name = division.getName();
+                divisionNames.add(name);
+            }
         }
 
         return divisionNames;

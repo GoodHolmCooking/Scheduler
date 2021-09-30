@@ -38,7 +38,7 @@
             <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <TextField GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <ComboBox fx:id="countryBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <ComboBox fx:id="countryBox" onAction="#onCountryChanged" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
             <ComboBox fx:id="divBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
          </children>
       </GridPane>

@@ -308,10 +308,12 @@ public class DBHandler {
             );
 
             while (resultSet.next()) {
-                String country = resultSet.getString("Country");
+                String countryName = resultSet.getString("Country");
                 int country_id = resultSet.getInt("Country_ID");
 
-                Main.countryList.addCountry(country_id, country);
+                Country country = new Country(countryName, country_id);
+
+                Main.countryList.addCountry(country);
             }
 
             connection.close();

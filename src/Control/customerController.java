@@ -31,13 +31,20 @@ public class customerController implements Initializable {
         Main.custHandler.loadDashboard(event, stage, scene);
     }
 
+    public void onCountryChanged(ActionEvent event) {
+        String countryName = countryBox.getSelectionModel().getSelectedItem();
+        int id = Main.countryList.getId(countryName);
+        divBox.setItems(Main.divisionList.getDivisionNames(id));
+        divBox.getSelectionModel().select(0);
+    }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         idField.setText(String.valueOf(Main.customerList.getCurrentId()));
         countryBox.setItems(Main.countryList.getCountryList());
         countryBox.getSelectionModel().select(0);
-        divBox.setItems(Main.divisionList.getDivisionNames());
+        divBox.setItems(Main.divisionList.getDivisionNames(1));
         divBox.getSelectionModel().select(0);
     }
 }
