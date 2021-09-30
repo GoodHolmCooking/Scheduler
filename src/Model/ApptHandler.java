@@ -280,14 +280,14 @@ public class ApptHandler {
             if (apptExists) { // An appointment of that ID was found, so let's update the appointment on file.
                 String updater = Main.authenticator.getCurrentUser();
                 Main.schedule.updateAppointment(appointment, updater, currentTime);
-                Main.loader.updateAppointment(appointment, updater, currentTime);
+                Main.DBHandler.updateAppointment(appointment, updater, currentTime);
             }
             else { // No appointment of that ID exists, so let's create a new one.
                 // Add this new appointment to the backend of the program.
                 Main.schedule.addAppointment(appointment);
 
                 // Add this appointment to the persistent storage in the database.
-                Main.loader.addAppointment(appointment);
+                Main.DBHandler.addAppointment(appointment);
             }
             // Close the window and loadup the dashboard.
             loadDashboard(event, stage, scene);

@@ -19,19 +19,11 @@ public class customerController implements Initializable {
     private Parent root;
 
     public void onSave(ActionEvent event) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("../View/dashboard.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        Main.custHandler.saveCustomer();
     }
 
     public void onCancel(ActionEvent event) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("../View/dashboard.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        Main.custHandler.loadDashboard(event, stage, scene);
     }
 
 

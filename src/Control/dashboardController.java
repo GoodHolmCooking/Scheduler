@@ -1,8 +1,7 @@
 package Control;
 
 import Model.Appointment;
-import Model.Authenticator;
-import Model.Schedule;
+import Model.Customer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,26 +23,26 @@ public class dashboardController implements Initializable {
     private Parent root;
 
     @FXML private TableView<Appointment> appointmentTable;
-
     @FXML private TableColumn<Appointment, String> typeCol;
-
     @FXML private TableColumn<Appointment, Integer> apptIdCol;
-
     @FXML private TableColumn<Appointment, Timestamp> startCol;
-
     @FXML private TableColumn<Appointment, Timestamp> endCol;
-
     @FXML private TableColumn<Appointment, String> titleCol;
-
     @FXML private TableColumn<Appointment, String> descrCol;
-
     @FXML private TableColumn<Appointment, String> locCol;
-
     @FXML private TableColumn<Appointment, Integer> custIdCol;
-
     @FXML private TableColumn<Appointment, String> displayCol;
 
     @FXML private RadioButton monthRadio, weekRadio;
+
+    @FXML private TableView<Customer> customerTable;
+    @FXML private TableColumn<Appointment, Integer> mainCustIdCol;
+    @FXML private TableColumn<Appointment, String> nameCol;
+    @FXML private TableColumn<Appointment, String> addressCol;
+    @FXML private TableColumn<Appointment, String> postalCol;
+    @FXML private TableColumn<Appointment, String> phoneCol;
+    @FXML private TableColumn<Appointment, String> countryCol;
+    @FXML private TableColumn<Appointment, String> divCol;
 
     private void noSelectionWarning(String type) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -105,7 +104,7 @@ public class dashboardController implements Initializable {
             Main.schedule.removeAppointment(selectedAppointment);
 
             // Remove from DB
-            Main.loader.removeAppointment(selectedAppointment);
+            Main.DBHandler.removeAppointment(selectedAppointment);
         }
         catch (Exception e) {
             noSelectionWarning("delete");
@@ -146,8 +145,16 @@ public class dashboardController implements Initializable {
         locCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("location"));
         custIdCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("cust_id"));
         displayCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("display"));
-
         appointmentTable.setItems(Main.schedule.getAppointments());
+
+        mainCustIdCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("id"));
+        nameCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("name"));
+        addressCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("address"));
+        postalCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("postal"));
+        phoneCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("phone"));
+        countryCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("country"));
+        divCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("division"));
+        customerTable.setItems(Main.customerList.getCustomers());
     }
 }
 

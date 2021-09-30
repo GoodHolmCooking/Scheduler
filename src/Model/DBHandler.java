@@ -4,7 +4,7 @@ import Control.Main;
 
 import java.sql.*;
 
-public class Loader {
+public class DBHandler {
     public void loadSchedule() {
         try {
             Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/project", "root", "root");
@@ -26,9 +26,16 @@ public class Loader {
                 int user_id = resultSet.getInt("User_ID");
                 String creator = resultSet.getString("Created_By");
                 Timestamp created = resultSet.getTimestamp("Create_Date");
+                Timestamp updated = resultSet.getTimestamp("Last_Update");
+                String updater = resultSet.getString("Last_Updated_By");
 
                 Appointment appointment = new Appointment(appt_id, start, end, title, type, description, location,
                         cust_id, contact, user_id, created, creator);
+
+                // Manually added to not cause problems with constructor.
+                appointment.setUpdater(updater);
+                appointment.setUpdated(updated);
+
                 Main.schedule.addAppointment(appointment);
 
             }
@@ -192,4 +199,52 @@ public class Loader {
         }
     }
 
+    public void loadCustomers() {
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/project", "root", "root");
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(
+                    "SELECT DISTINCT " +
+                            "customers.*, " +
+                            "first_level_divisions.Division, " +
+                            "first_level_divisions.Division_ID, " +
+                            "countries.Country_ID, " +
+                            "countries.Country " +
+                        "FROM customers " +
+                        "JOIN first_level_divisions " +
+                        "ON customers.Division_ID = first_level_divisions.Division_ID " +
+                        "JOIN countries " +
+                        "ON first_level_divisions.Country_ID = countries.Country_ID"
+            );
+
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("Customer_ID");
+                String name = resultSet.getString("Customer_Name");
+                String address = resultSet.getString("Address");
+                String postal = resultSet.getString("Postal_Code");
+                String phone = resultSet.getString("Phone");
+                Timestamp created = resultSet.getTimestamp("Create_Date");
+                String creator = resultSet.getString("Created_By");
+                Timestamp updated = resultSet.getTimestamp("Last_Update");
+                String updater = resultSet.getString("Last_Updated_By");
+                int div_id = resultSet.getInt("Division_ID");
+                String division = resultSet.getString("Division");
+                String country = resultSet.getString("Country");
+                int country_id = resultSet.getInt("Country_ID");
+
+                Customer customer = new Customer(id, name, address, postal, phone, created, creator, div_id, division
+                        , country_id, country);
+
+                // Manually added to not affect constructor.
+                customer.setUpdated(updated);
+                customer.setUpdater(updater);
+
+                Main.customerList.addCustomer(customer);
+            }
+            connection.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

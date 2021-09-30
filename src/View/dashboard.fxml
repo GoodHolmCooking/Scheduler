@@ -51,18 +51,18 @@
          </children>
       </HBox>
       <Label layoutX="52.0" layoutY="46.0" text="Appointments" />
-      <TableView layoutX="52.0" layoutY="325.0" prefHeight="200.0" prefWidth="759.0">
+      <TableView fx:id="customerTable" layoutX="52.0" layoutY="325.0" prefHeight="200.0" prefWidth="1119.0">
         <columns>
-          <TableColumn prefWidth="114.0" text="Customer ID" />
-          <TableColumn prefWidth="74.0" text="Name" />
-            <TableColumn prefWidth="108.0" text="Address" />
-            <TableColumn prefWidth="95.0" text="Postal Code" />
-            <TableColumn prefWidth="144.0" text="Phone Number" />
-            <TableColumn prefWidth="99.0" text="Country" />
-            <TableColumn prefWidth="124.0" text="State/Province" />
+          <TableColumn fx:id="mainCustIdCol" prefWidth="105.0" text="Customer ID" />
+          <TableColumn fx:id="nameCol" prefWidth="190.0" text="Name" />
+            <TableColumn fx:id="addressCol" prefWidth="184.0" text="Address" />
+            <TableColumn fx:id="postalCol" prefWidth="129.0" text="Postal Code" />
+            <TableColumn fx:id="phoneCol" prefWidth="120.0" text="Phone Number" />
+            <TableColumn fx:id="countryCol" prefWidth="186.0" text="Country" />
+            <TableColumn fx:id="divCol" prefWidth="204.0" text="State/Province" />
         </columns>
       </TableView>
-      <HBox layoutX="604.0" layoutY="536.0" prefHeight="25.0" prefWidth="207.0" spacing="20.0">
+      <HBox layoutX="963.0" layoutY="537.0" prefHeight="25.0" prefWidth="207.0" spacing="20.0">
          <children>
             <Button mnemonicParsing="false" onAction="#addCustomer" text="Add" />
             <Button mnemonicParsing="false" onAction="#updateCustomer" text="Update" />
