@@ -5,7 +5,28 @@ import Control.Main;
 import java.sql.*;
 
 public class DBHandler {
-    public void loadSchedule() {
+    private void loadUsers() {
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/project", "root", "root");
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM users");
+
+
+            while (resultSet.next()) {
+                String user = resultSet.getString("User_Name");
+                String password = resultSet.getString("Password");
+
+                Main.authenticator.addUser(user, password);
+            }
+            connection.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    private void loadSchedule() {
         try {
             Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/project", "root", "root");
             Statement statement = connection.createStatement();
@@ -45,7 +66,7 @@ public class DBHandler {
         }
     }
 
-    public void loadContactList() {
+    private void loadContactList() {
         try {
             Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/project", "root", "root");
             Statement statement = connection.createStatement();
@@ -199,7 +220,7 @@ public class DBHandler {
         }
     }
 
-    public void loadCustomers() {
+    private void loadCustomers() {
         try {
             Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/project", "root", "root");
             Statement statement = connection.createStatement();
@@ -246,5 +267,69 @@ public class DBHandler {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void loadDivisions() {
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/project", "root", "root");
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(
+                    "SELECT Division_ID, Division, Country_ID " +
+                        "FROM first_level_divisions"
+            );
+
+
+            while (resultSet.next()) {
+                int div_id = resultSet.getInt("Division_ID");
+                String divName = resultSet.getString("Division");
+                if (divName.equals("QuÃ©bec")) {
+                    divName = "Québec";
+                }
+                int country_id = resultSet.getInt("Country_ID");
+
+                Division division = new Division(div_id, divName, country_id);
+                Main.divisionList.addDivision(division);
+
+            }
+            connection.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadCountries() {
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/project", "root", "root");
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(
+                    "SELECT Country_ID, Country " +
+                        "FROM countries"
+            );
+
+            while (resultSet.next()) {
+                String country = resultSet.getString("Country");
+                int country_id = resultSet.getInt("Country_ID");
+
+                Main.countryList.addCountry(country_id, country);
+            }
+
+            connection.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadUtilityData() {
+        loadCountries();
+        loadDivisions();
+    }
+
+    public void initializeData() {
+        loadContactList();
+        loadSchedule();
+        loadUtilityData();
+        loadCustomers();
+        loadUsers();
     }
 }

@@ -30,6 +30,8 @@ public class Customer {
         this.country = country;
         this.division = division;
         this.country_id = country_id;
+        this.updated = null;
+        this.updater = null;
     }
 
     public int getCountry_id() {

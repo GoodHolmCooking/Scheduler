@@ -16,13 +16,12 @@ public class Main extends Application {
     public static Authenticator authenticator = new Authenticator();
     public static CustHandler custHandler = new CustHandler();
     public static CustomerList customerList = new CustomerList();
+    public static DivisionList divisionList = new DivisionList();
+    public static CountryList countryList = new CountryList();
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        DBHandler.loadContactList();
-        DBHandler.loadSchedule();
-        DBHandler.loadCustomers();
-        authenticator.addUser("test", "test");
+        DBHandler.initializeData();
 
         Parent root = FXMLLoader.load(getClass().getResource("../View/login.fxml"));
         primaryStage.setTitle("Login");
