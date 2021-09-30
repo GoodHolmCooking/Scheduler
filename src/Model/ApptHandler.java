@@ -269,22 +269,25 @@ public class ApptHandler {
             int user_id_int = Integer.parseInt(user_id);
             Contact contact = Main.contactList.getContact(contactName);
 
+            Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+            String creator = Main.authenticator.getCurrentUser();
 
             Appointment appointment = new Appointment(appt_id, startDate, endDate, title, type, description, location
-                    , cust_id_int, contact, user_id_int);
+                    , cust_id_int, contact, user_id_int, currentTime, creator);
 
             boolean apptExists = Main.schedule.doesApptExist(appointment);
 
             if (apptExists) { // An appointment of that ID was found, so let's update the appointment on file.
-                Main.schedule.updateAppointment(appointment);
-                Main.loader.updateAppointment(appointment);
+                String updater = Main.authenticator.getCurrentUser();
+                Main.schedule.updateAppointment(appointment, updater, currentTime);
+                Main.loader.updateAppointment(appointment, updater, currentTime);
             }
             else { // No appointment of that ID exists, so let's create a new one.
                 // Add this new appointment to the backend of the program.
                 Main.schedule.addAppointment(appointment);
 
                 // Add this appointment to the persistent storage in the database.
-                Main.loader.saveAppointment(appointment);
+                Main.loader.addAppointment(appointment);
             }
             // Close the window and loadup the dashboard.
             loadDashboard(event, stage, scene);

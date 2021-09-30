@@ -18,10 +18,14 @@ public class Appointment {
     private Contact contact;
     private int user_id;
     private String display;
+    private Timestamp created;
+    private String creator;
+    private Timestamp updated;
+    private String updater;
 
 
     public Appointment(int appt_id, Timestamp start, Timestamp end, String title, String type, String description,
-                       String location, int cust_id, Contact contact, int user_id) {
+                       String location, int cust_id, Contact contact, int user_id, Timestamp created, String creator) {
         this.appt_id = appt_id;
         this.start = start;
         this.end = end;
@@ -32,6 +36,10 @@ public class Appointment {
         this.cust_id = cust_id;
         this.contact = contact;
         this.user_id = user_id;
+        this.created = created;
+        this.creator = creator;
+        this.updated = null;
+        this.updater = null;
     }
 
     public void displayMonth() {
@@ -42,7 +50,6 @@ public class Appointment {
 
         int month = cal.get(Calendar.MONTH);
         this.display = new DateFormatSymbols().getMonths()[month];
-        System.out.println("Current display is " + getDisplay());
     }
 
     public void displayWeek() {
@@ -53,7 +60,6 @@ public class Appointment {
 
         int week = cal.get(Calendar.WEEK_OF_YEAR);
         this.display = String.valueOf(week);
-        System.out.println("Current display is " + getDisplay());
     }
 
     public int getAppt_id() {
@@ -142,6 +148,30 @@ public class Appointment {
 
     public void setDisplay(String display) {
         this.display = display;
+    }
+
+    public Timestamp getCreated() {
+        return created;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public Timestamp getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(Timestamp updated) {
+        this.updated = updated;
+    }
+
+    public String getUpdater() {
+        return updater;
+    }
+
+    public void setUpdater(String updater) {
+        this.updater = updater;
     }
 }
 

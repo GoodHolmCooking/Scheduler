@@ -10,7 +10,7 @@ public class Schedule {
 
     public void addAppointment(Appointment appointment) { appointments.add(appointment); }
 
-    public void updateAppointment(Appointment apptUpdate) {
+    public void updateAppointment(Appointment apptUpdate, String updater, Timestamp updated) {
         int updateId = apptUpdate.getAppt_id();
         Timestamp updateStart = apptUpdate.getStart();
         Timestamp updateEnd = apptUpdate.getEnd();
@@ -40,6 +40,8 @@ public class Schedule {
         foundAppointment.setCust_id(updateCustId);
         foundAppointment.setContact(updateContact);
         foundAppointment.setUser_id(updateUserId);
+        foundAppointment.setUpdated(updated);
+        foundAppointment.setUpdater(updater);
     }
 
     public void removeAppointment(Appointment selectedAppointment) {

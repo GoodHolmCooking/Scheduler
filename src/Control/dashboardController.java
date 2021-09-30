@@ -1,6 +1,7 @@
 package Control;
 
 import Model.Appointment;
+import Model.Authenticator;
 import Model.Schedule;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,10 +23,7 @@ public class dashboardController implements Initializable {
     private Scene scene;
     private Parent root;
 
-
     @FXML private TableView<Appointment> appointmentTable;
-
-
 
     @FXML private TableColumn<Appointment, String> typeCol;
 
@@ -55,7 +53,6 @@ public class dashboardController implements Initializable {
     }
 
     public void sortByMonth(ActionEvent event) {
-        System.out.println("Sort by month run.");
         weekRadio.setSelected(false);
         weekRadio.setDisable(false);
         monthRadio.setDisable(true);
@@ -65,7 +62,6 @@ public class dashboardController implements Initializable {
     }
 
     public void sortByWeek(ActionEvent event) {
-        System.out.println("Sort by week run.");
         monthRadio.setSelected(false);
         monthRadio.setDisable(false);
         weekRadio.setDisable(true);
@@ -152,7 +148,6 @@ public class dashboardController implements Initializable {
         displayCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("display"));
 
         appointmentTable.setItems(Main.schedule.getAppointments());
-
     }
 }
 

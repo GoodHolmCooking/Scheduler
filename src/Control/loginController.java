@@ -19,8 +19,6 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class loginController implements Initializable {
-    private Stage stage;
-    private Scene scene;
     private Parent root;
 
     @FXML
@@ -29,40 +27,24 @@ public class loginController implements Initializable {
     @FXML
     private Label locField, nameLabel, pwordLabel;
 
-    private String correctUsername = "test";
-    private String correctPassword = "test";
-
     private String error;
 
     @FXML
     private Button loginBtn;
 
-    private boolean checkLogin() {
-        String username = nameField.getText();
-        String pword = pwordField.getText();
-        boolean evaluation;
-
-        if((username.equals(correctUsername)) && (pword.equals(correctPassword))) {
-            evaluation = true;
-        }
-        else {
-            evaluation = false;
-        }
-
-        return evaluation;
-    }
-
     public void onLogin(ActionEvent event) throws Exception {
-        if (checkLogin()) {
+        String username = nameField.getText();
+        String password = pwordField.getText();
+
+        if (Main.authenticator.authenticate(username, password)) {
             Parent root = FXMLLoader.load(getClass().getResource("../View/dashboard.fxml"));
-            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            scene = new Scene(root);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
         }
         else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-
             alert.setHeaderText(null);
             alert.setContentText(error);
             alert.showAndWait();
