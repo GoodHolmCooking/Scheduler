@@ -38,8 +38,8 @@
             <TextField fx:id="addressField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <TextField fx:id="postalField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <TextField fx:id="phoneField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <ComboBox fx:id="countryBox" onAction="#onCountryChanged" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <ComboBox fx:id="divBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <ComboBox fx:id="countryBox" onAction="#onCountryChanged" prefHeight="25.0" prefWidth="440.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <ComboBox fx:id="divBox" prefHeight="25.0" prefWidth="440.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
          </children>
       </GridPane>
       <Button layoutX="455.0" layoutY="428.0" mnemonicParsing="false" onAction="#onSave" text="Save" />

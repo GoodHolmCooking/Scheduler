@@ -10,10 +10,10 @@ public class Schedule {
 
     public void addAppointment(Appointment appointment) { appointments.add(appointment); }
 
-    public void updateAppointment(Appointment apptUpdate, String updater, Timestamp updated) {
+    public void updateAppointment(Appointment apptUpdate, String updater, String updated) {
         int updateId = apptUpdate.getAppt_id();
-        Timestamp updateStart = apptUpdate.getStart();
-        Timestamp updateEnd = apptUpdate.getEnd();
+        String updateStart = apptUpdate.getStart();
+        String updateEnd = apptUpdate.getEnd();
         String updateTitle = apptUpdate.getTitle();
         String updateType = apptUpdate.getType();
         String updateDescr = apptUpdate.getDescription();

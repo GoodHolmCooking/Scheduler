@@ -42,4 +42,21 @@ public class DivisionList {
 
         return divisionNames;
     }
+
+    public int getIndex(int id) {
+        int desiredId = 0;
+        int loopId = 0;
+
+        for (Division division : divisions) {
+            if (division.getDiv_id() == desiredId) {
+                desiredId = loopId;
+                break;
+            }
+            else {
+                loopId += 1;
+            }
+        }
+
+        return desiredId;
+    }
 }

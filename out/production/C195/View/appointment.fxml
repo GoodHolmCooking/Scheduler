@@ -36,7 +36,6 @@
         </rowConstraints>
          <children>
             <Label text="Appointment ID" />
-            <Label text="Title" GridPane.rowIndex="1" />
             <Label text="Description" GridPane.rowIndex="2" />
             <Label text="Location" GridPane.rowIndex="3" />
             <Label text="Contact" GridPane.rowIndex="4" />
@@ -51,8 +50,7 @@
             <TextField fx:id="locField" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.rowIndex="3" />
             <ComboBox fx:id="contactBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="4" />
             <TextField fx:id="typeField" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="5" />
-            <TextField fx:id="customerField" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-            <TextField fx:id="userField" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+            <TextField fx:id="userField" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="9" />
             <DatePicker fx:id="startDateField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
             <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" text="Hour" GridPane.columnIndex="2" GridPane.rowIndex="6">
                <GridPane.margin>
@@ -79,6 +77,8 @@
                </GridPane.margin>
             </Label>
             <DatePicker fx:id="endDateField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <Label text="Title" GridPane.rowIndex="1" />
+            <ComboBox fx:id="customerBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
          </children>
       </GridPane>
       <Button layoutX="529.0" layoutY="753.0" mnemonicParsing="false" onAction="#onSave" text="Save" />

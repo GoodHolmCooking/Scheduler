@@ -110,7 +110,7 @@ public class ApptHandler {
 
     private boolean validateInput(String title, String description, String location,
                                   String type, LocalDate startDate, String startHr, String startMin, LocalDate endDate,
-                                  String endHr, String endMin, String cust_id,
+                                  String endHr, String endMin,
                                   String user_id, ArrayList<String> errors){
 
         // Check title
@@ -174,14 +174,6 @@ public class ApptHandler {
             }
         }
 
-        // check customer id
-        if (inputValid) {
-            inputValid = containsData(cust_id, inputValid, errors);
-            if (inputValid) {
-                checkNum(cust_id, inputValid, errors);
-            }
-        }
-
         // check user id
         if (inputValid) {
             inputValid = containsData(user_id, inputValid, errors);
@@ -193,7 +185,7 @@ public class ApptHandler {
         return inputValid;
     }
 
-    private Timestamp formatTimestamp(LocalDate pickedDate, String hr, String min) {
+    private String formatTimestamp(LocalDate pickedDate, String hr, String min) {
         // Check hr
         if (hr.length() == 1) {
             hr = "0" + hr;
@@ -206,7 +198,7 @@ public class ApptHandler {
 
         String formattedStartDate = pickedDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         String dateString = formattedStartDate + " " + hr + ":" + min + ":00";
-        return Timestamp.valueOf(dateString);
+        return dateString;
     }
 
 
@@ -216,7 +208,7 @@ public class ApptHandler {
             TextField titleField,
             TextField descrField,
             TextField locField,
-            ComboBox contactBox,
+            ComboBox<String> contactBox,
             TextField typeField,
             DatePicker startDateField,
             TextField startHrField,
@@ -224,7 +216,7 @@ public class ApptHandler {
             DatePicker endDateField,
             TextField endHrField,
             TextField endMinField,
-            TextField customerField,
+            ComboBox<String> customerBox,
             TextField userField,
             Stage stage,
             Scene scene
@@ -243,19 +235,20 @@ public class ApptHandler {
         LocalDate pickedEndDate = endDateField.getValue();
         String endHr = endHrField.getText();
         String endMin = endMinField.getText();
-        String cust_id = customerField.getText();
+        String customerName = customerBox.getSelectionModel().getSelectedItem();
+        int cust_id = Main.customerList.getCustomerId(customerName);
         String user_id = userField.getText();
-        Timestamp startDate = null;
-        Timestamp endDate = null;
+        String startDate = null;
+        String endDate = null;
 
         boolean inputValid = validateInput(title, description, location, type, pickedStartDate, startHr, startMin,
                 pickedEndDate,
                 endHr, endMin,
-                cust_id, user_id, errors);
+                user_id, errors);
         if (inputValid) {
             // Format Timestamp takes the three inputs and combines them into one Timestamp value.
             startDate = formatTimestamp(pickedStartDate, startHr, startMin);
-            endDate = formatTimestamp(pickedEndDate, startHr, startMin);
+            endDate = formatTimestamp(pickedEndDate, endHr, endMin);
 
             if (endDate.compareTo(startDate) < 0) {
                 inputValid = false;
@@ -265,22 +258,23 @@ public class ApptHandler {
         }
 
         if (inputValid) {
-            int cust_id_int = Integer.parseInt(cust_id);
             int user_id_int = Integer.parseInt(user_id);
             Contact contact = Main.contactList.getContact(contactName);
 
             Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+            String formatedTime = currentTime.toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
             String creator = Main.authenticator.getCurrentUser();
 
             Appointment appointment = new Appointment(appt_id, startDate, endDate, title, type, description, location
-                    , cust_id_int, contact, user_id_int, currentTime, creator);
+                    , cust_id, contact, user_id_int, formatedTime, creator);
 
             boolean apptExists = Main.schedule.doesApptExist(appointment);
 
             if (apptExists) { // An appointment of that ID was found, so let's update the appointment on file.
                 String updater = Main.authenticator.getCurrentUser();
-                Main.schedule.updateAppointment(appointment, updater, currentTime);
-                Main.DBHandler.updateAppointment(appointment, updater, currentTime);
+                Main.schedule.updateAppointment(appointment, updater, formatedTime);
+                Main.DBHandler.updateAppointment(appointment, updater, formatedTime);
             }
             else { // No appointment of that ID exists, so let's create a new one.
                 // Add this new appointment to the backend of the program.

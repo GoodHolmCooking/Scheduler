@@ -36,7 +36,7 @@
             <TableColumn fx:id="custIdCol" prefWidth="193.0" text="Customer_ID" />
         </columns>
       </TableView>
-      <HBox layoutX="628.0" layoutY="276.0" prefHeight="25.0" prefWidth="207.0" spacing="20.0">
+      <HBox layoutX="1063.0" layoutY="276.0" prefHeight="25.0" prefWidth="207.0" spacing="20.0">
          <children>
             <Button mnemonicParsing="false" onAction="#addAppointment" text="Add" />
             <Button mnemonicParsing="false" onAction="#updateAppointment" text="Update" />

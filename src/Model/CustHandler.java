@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.sql.Timestamp;
+import java.time.format.DateTimeFormatter;
 
 public class CustHandler {
     public void loadDashboard(ActionEvent event, Stage stage, Scene scene) throws Exception {
@@ -39,20 +40,39 @@ public class CustHandler {
         String divName = divBox.getSelectionModel().getSelectedItem();
         int div_id = Main.divisionList.getID(divName);
 
-
         String creator = Main.authenticator.getCurrentUser();
-        Timestamp created = new Timestamp(System.currentTimeMillis());
+        Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+        String formatedTime = currentTime.toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
-        Customer customer = new Customer(id, name, address, postal, phone, created, creator, div_id, divName,
+        Customer customer = new Customer(id, name, address, postal, phone, formatedTime, creator, div_id, divName,
                 country_id, countryName);
 
-        // Save to CustomerList
-        Main.customerList.addCustomer(customer);
+        if (Main.customerList.customerExists(id)) {
+            // Update Customer List
+            Main.customerList.updateCustomer(customer, formatedTime);
 
-        // Save to DB
-        Main.DBHandler.addCustomer(customer);
+            // Update DB
+            Main.DBHandler.updateCustomer(customer, formatedTime);
+        }
+        else {
+
+            // Save to Customer List
+            Main.customerList.addCustomer(customer);
+
+            // Save to DB
+            Main.DBHandler.addCustomer(customer);
+        }
 
         loadDashboard(event, stage, scene);
     }
 
+    public void deleteCustomer(Customer selectedCustomer) {
+
+        // Remove from Customer List
+        Main.customerList.removeCustomer(selectedCustomer);
+
+        // Remove from DB
+        Main.DBHandler.removeCustomer(selectedCustomer);
+
+    }
 }

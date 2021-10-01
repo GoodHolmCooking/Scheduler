@@ -32,7 +32,7 @@ public class appointmentController implements Initializable {
     @FXML private TextField locField;
     @FXML private ComboBox<String> contactBox;
     @FXML private TextField typeField;
-    @FXML private TextField customerField;
+    @FXML private ComboBox<String> customerBox;
     @FXML private TextField userField;
     @FXML private DatePicker startDateField;
     @FXML private TextField startHrField;
@@ -56,7 +56,7 @@ public class appointmentController implements Initializable {
                 endDateField,
                 endHrField,
                 endMinField,
-                customerField,
+                customerBox,
                 userField,
                 stage,
                 scene
@@ -73,6 +73,11 @@ public class appointmentController implements Initializable {
         apptField.setText(String.valueOf(Main.schedule.getCurrentId()));
         contactBox.setItems(Main.contactList.getContacts());
         contactBox.getSelectionModel().select(0);
+        customerBox.setItems(Main.customerList.getCustomerNames());
+        customerBox.getSelectionModel().select(0);
+        String userName = Main.authenticator.getCurrentUser();
+        int userId = Main.authenticator.getId(userName);
+        userField.setText(String.valueOf(userId));
     }
 }
 

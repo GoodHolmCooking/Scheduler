@@ -33,7 +33,7 @@ public class apptUpdateController implements Initializable {
     @FXML private TextField locField;
     @FXML private ComboBox<String> contactBox;
     @FXML private TextField typeField;
-    @FXML private TextField customerField;
+    @FXML private ComboBox<String> customerBox;
     @FXML private TextField userField;
     @FXML private DatePicker startDateField;
     @FXML private TextField startHrField;
@@ -57,7 +57,7 @@ public class apptUpdateController implements Initializable {
                 endDateField,
                 endHrField,
                 endMinField,
-                customerField,
+                customerBox,
                 userField,
                 stage,
                 scene
@@ -95,37 +95,30 @@ public class apptUpdateController implements Initializable {
         typeField.setText(selectedAppointment.getType());
 
 //        Load start date
-        Timestamp startTimeStamp = selectedAppointment.getStart();
-        LocalDateTime startDate = startTimeStamp.toLocalDateTime();
-        startDateField.setValue(LocalDate.from(startDate));
+        startDateField.setValue(selectedAppointment.getStartDate());
 
 //        Load start hr
-        int startHr = startTimeStamp.toLocalDateTime().getHour();
-        startHrField.setText(String.valueOf(startHr));
+        startHrField.setText(String.valueOf(selectedAppointment.getStartHr()));
 
 //        Load start min
-        int startMin = startTimeStamp.toLocalDateTime().getMinute();
-        startMinField.setText(String.valueOf(startMin));
+        startMinField.setText(String.valueOf(selectedAppointment.getStartMin()));
 
 //        Load end date
-        Timestamp endTimeStamp = selectedAppointment.getEnd();
-        LocalDateTime endDate = endTimeStamp.toLocalDateTime();
-        endDateField.setValue(LocalDate.from(endDate));
+        endDateField.setValue(selectedAppointment.getEndDate());
 
 //        Load end hr
-        int endHr = endTimeStamp.toLocalDateTime().getHour();
-        endHrField.setText(String.valueOf(endHr));
+        endHrField.setText(String.valueOf(selectedAppointment.getEndHr()));
 
 //        Load end min
-        int endMin = endTimeStamp.toLocalDateTime().getMinute();
-        endMinField.setText(String.valueOf(endMin));
+        endMinField.setText(String.valueOf(selectedAppointment.getEndMin()));
 
 //        Load customer id
-        customerField.setText(String.valueOf(selectedAppointment.getCust_id()));
+        int customer_id = selectedAppointment.getCust_id();
+        customerBox.setItems(Main.customerList.getCustomerNames());
+        customerBox.getSelectionModel().select(Main.customerList.getIndex(customer_id));
 
 //        Load user id
         userField.setText(String.valueOf(selectedAppointment.getUser_id()));
-
     }
 }
 

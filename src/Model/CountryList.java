@@ -25,6 +25,23 @@ public class CountryList {
         return desiredCountry;
     }
 
+    public int getIndex(int id) {
+        int desiredIndex = 0;
+        int loopIndex = 0;
+
+        for (Country country : countries) {
+            if (country.getId() == id) {
+                desiredIndex = loopIndex;
+                break;
+            }
+            else {
+                loopIndex += 1;
+            }
+        }
+
+        return desiredIndex;
+    }
+
     public String getCountryName(int id) {
         String foundCountry = null;
 

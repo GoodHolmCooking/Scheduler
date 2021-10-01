@@ -36,13 +36,13 @@ public class dashboardController implements Initializable {
     @FXML private RadioButton monthRadio, weekRadio;
 
     @FXML private TableView<Customer> customerTable;
-    @FXML private TableColumn<Appointment, Integer> mainCustIdCol;
-    @FXML private TableColumn<Appointment, String> nameCol;
-    @FXML private TableColumn<Appointment, String> addressCol;
-    @FXML private TableColumn<Appointment, String> postalCol;
-    @FXML private TableColumn<Appointment, String> phoneCol;
-    @FXML private TableColumn<Appointment, String> countryCol;
-    @FXML private TableColumn<Appointment, String> divCol;
+    @FXML private TableColumn<Customer, Integer> mainCustIdCol;
+    @FXML private TableColumn<Customer, String> nameCol;
+    @FXML private TableColumn<Customer, String> addressCol;
+    @FXML private TableColumn<Customer, String> postalCol;
+    @FXML private TableColumn<Customer, String> phoneCol;
+    @FXML private TableColumn<Customer, String> countryCol;
+    @FXML private TableColumn<Customer, String> divCol;
 
     private void noSelectionWarning(String type) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -68,8 +68,6 @@ public class dashboardController implements Initializable {
         displayCol.setText("Week");
         appointmentTable.refresh();
     }
-
-
 
     public void addAppointment(ActionEvent event) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("../View/appointment.fxml"));
@@ -121,15 +119,30 @@ public class dashboardController implements Initializable {
     }
 
     public void updateCustomer(ActionEvent event) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("../View/customer.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        try {
+            // Select the customer from the table. Then store the id in an object to hold between windows.
+            Customer selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
+            Main.storage.setCustomerId(selectedCustomer.getId());
+
+            Parent root = FXMLLoader.load(getClass().getResource("../View/custUpdate.fxml"));
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
+        catch (Exception e) {
+            noSelectionWarning("update");
+        }
     }
 
     public void deleteCustomer(ActionEvent event) {
-        System.out.println("Customer deleted!");
+        try {
+            Customer customer = customerTable.getSelectionModel().getSelectedItem();
+            Main.custHandler.deleteCustomer(customer);
+        }
+        catch (Exception e) {
+            noSelectionWarning("delete");
+        }
     }
 
     @Override
@@ -146,15 +159,17 @@ public class dashboardController implements Initializable {
         custIdCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("cust_id"));
         displayCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("display"));
         appointmentTable.setItems(Main.schedule.getAppointments());
+        appointmentTable.getSortOrder().add(displayCol);
 
-        mainCustIdCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("id"));
-        nameCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("name"));
-        addressCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("address"));
-        postalCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("postal"));
-        phoneCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("phone"));
-        countryCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("country"));
-        divCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("division"));
+        mainCustIdCol.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("id"));
+        nameCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("name"));
+        addressCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("address"));
+        postalCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("postal"));
+        phoneCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("phone"));
+        countryCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("country"));
+        divCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("division"));
         customerTable.setItems(Main.customerList.getCustomers());
+        customerTable.getSortOrder().add(mainCustIdCol);
     }
 }
 

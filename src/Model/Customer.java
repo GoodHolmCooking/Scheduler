@@ -1,23 +1,21 @@
 package Model;
 
-import java.sql.Timestamp;
-
 public class Customer {
     private int id;
     private String name;
     private String address;
     private String postal;
     private String phone;
-    private Timestamp created;
+    private String created;
     private String creator;
-    private Timestamp updated;
+    private String updated;
     private String updater;
     private int div_id;
     private String country;
     private int country_id;
     private String division;
 
-    public Customer(int id, String name, String address, String postal, String phone, Timestamp created,
+    public Customer(int id, String name, String address, String postal, String phone, String created,
                     String creator, int div_id, String division, int country_id, String country) {
         this.id = id;
         this.name = name;
@@ -98,11 +96,11 @@ public class Customer {
         this.phone = phone;
     }
 
-    public Timestamp getCreated() {
+    public String getCreated() {
         return created;
     }
 
-    public void setCreated(Timestamp created) {
+    public void setCreated(String created) {
         this.created = created;
     }
 
@@ -114,11 +112,11 @@ public class Customer {
         this.creator = creator;
     }
 
-    public Timestamp getUpdated() {
+    public String getUpdated() {
         return updated;
     }
 
-    public void setUpdated(Timestamp updated) {
+    public void setUpdated(String updated) {
         this.updated = updated;
     }
 

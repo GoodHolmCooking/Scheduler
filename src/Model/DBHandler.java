@@ -15,8 +15,10 @@ public class DBHandler {
             while (resultSet.next()) {
                 String user = resultSet.getString("User_Name");
                 String password = resultSet.getString("Password");
+                int id = resultSet.getInt("User_ID");
 
                 Main.authenticator.addUser(user, password);
+                Main.authenticator.addId(user, id);
             }
             connection.close();
         } catch (Exception e) {
@@ -35,8 +37,8 @@ public class DBHandler {
 
             while (resultSet.next()) {
                 int appt_id = resultSet.getInt("Appointment_ID");
-                Timestamp start = resultSet.getTimestamp("Start");
-                Timestamp end = resultSet.getTimestamp("End");
+                String start = resultSet.getString("Start");
+                String end = resultSet.getString("End");
                 String title = resultSet.getString("Title");
                 String type = resultSet.getString("Type");
                 String description = resultSet.getString("Description");
@@ -46,8 +48,8 @@ public class DBHandler {
                 Contact contact = Main.contactList.getContact(contactId);
                 int user_id = resultSet.getInt("User_ID");
                 String creator = resultSet.getString("Created_By");
-                Timestamp created = resultSet.getTimestamp("Create_Date");
-                Timestamp updated = resultSet.getTimestamp("Last_Update");
+                String created = resultSet.getString("Create_Date");
+                String updated = resultSet.getString("Last_Update");
                 String updater = resultSet.getString("Last_Updated_By");
 
                 Appointment appointment = new Appointment(appt_id, start, end, title, type, description, location,
@@ -89,8 +91,8 @@ public class DBHandler {
 
     public void addAppointment(Appointment appointment) {
         int appt_id = appointment.getAppt_id();
-        Timestamp start = appointment.getStart();
-        Timestamp end = appointment.getEnd();
+        String start = appointment.getStart();
+        String end = appointment.getEnd();
         String title = appointment.getTitle();
         String type = appointment.getType();
         String description = appointment.getDescription();
@@ -99,7 +101,7 @@ public class DBHandler {
         int user_id = appointment.getUser_id();
         int contact_id = appointment.getContact().getId();
         String creator = appointment.getCreator();
-        Timestamp created = appointment.getCreated();
+        String created = appointment.getCreated();
 
         try {
             Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/project", "root", "root");
@@ -121,16 +123,16 @@ public class DBHandler {
                     "Contact_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
             statement.setInt(1, appt_id); // Appointment ID
-            statement.setTimestamp(2, start); // Start
-            statement.setTimestamp(3, end); // End
+            statement.setString(2, start); // Start
+            statement.setString(3, end); // End
             statement.setString(4, title); // Title
             statement.setString(5, type); // Type
             statement.setString(6, description); // Description
             statement.setString(7, location); // Location
             statement.setInt(8, cust_id); // Customer ID
-            statement.setTimestamp(9, created); // Create Date
+            statement.setString(9, created); // Create Date
             statement.setString(10, creator); // Created By
-            statement.setTimestamp(11, null); // Last Update
+            statement.setString(11, null); // Last Update
             statement.setString(12, null); // Last Updated By
             statement.setInt(13, user_id); // User ID
             statement.setInt(14, contact_id); // Contact ID
@@ -143,10 +145,10 @@ public class DBHandler {
         }
     }
 
-    public void updateAppointment(Appointment appointment, String updater, Timestamp updated) {
+    public void updateAppointment(Appointment appointment, String updater, String updated) {
         int appt_id = appointment.getAppt_id();
-        Timestamp start = appointment.getStart();
-        Timestamp end = appointment.getEnd();
+        String start = appointment.getStart();
+        String end = appointment.getEnd();
         String title = appointment.getTitle();
         String type = appointment.getType();
         String description = appointment.getDescription();
@@ -154,8 +156,6 @@ public class DBHandler {
         int cust_id = appointment.getCust_id();
         int user_id = appointment.getUser_id();
         int contact_id = appointment.getContact().getId();
-        Timestamp created = appointment.getCreated();
-        String creator = appointment.getCreator();
 
         try {
             Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/project", "root", "root");
@@ -168,8 +168,6 @@ public class DBHandler {
                         "Type = ?," +
                         "Start = ?," +
                         "End = ?," +
-                        "Create_Date = ?," +
-                        "Created_By = ?," +
                         "Last_Update = ?," +
                         "Last_Updated_By = ?," +
                         "Customer_ID = ?," +
@@ -181,16 +179,14 @@ public class DBHandler {
             statement.setString(2, description); // Description
             statement.setString(3, location); // Location
             statement.setString(4, type); // Type
-            statement.setTimestamp(5, start); // Start
-            statement.setTimestamp(6, end); // End
-            statement.setTimestamp(7, created); // Create Date
-            statement.setString(8, creator); // Created By
-            statement.setTimestamp(9, updated); // Last Update
-            statement.setString(10, updater); // Last Updated By
-            statement.setInt(11, cust_id); // Customer ID
-            statement.setInt(12, user_id); // User ID
-            statement.setInt(13, contact_id); // Contact ID
-            statement.setInt(14, appt_id); // Appointment ID
+            statement.setString(5, start); // Start
+            statement.setString(6, end); // End
+            statement.setString(7, updated); // Last Update
+            statement.setString(8, updater); // Last Updated By
+            statement.setInt(9, cust_id); // Customer ID
+            statement.setInt(10, user_id); // User ID
+            statement.setInt(11, contact_id); // Contact ID
+            statement.setInt(12, appt_id); // Appointment ID
 
             statement.executeUpdate();
 
@@ -224,7 +220,7 @@ public class DBHandler {
         String address = customer.getAddress();
         String postal = customer.getPostal();
         String phone = customer.getPhone();
-        Timestamp created = customer.getCreated();
+        String created = customer.getCreated();
         String creator = customer.getCreator();
         int div_id = customer.getDiv_id();
 
@@ -248,7 +244,7 @@ public class DBHandler {
             statement.setString(3, address); // Address
             statement.setString(4, postal); // Postal Code
             statement.setString(5, phone); // Phone
-            statement.setTimestamp(6, created); // Create Date
+            statement.setString(6, created); // Create Date
             statement.setString(7, creator); // Created By
             statement.setTimestamp(8, null); // Last Update
             statement.setString(9, null); // Last Updated By
@@ -260,7 +256,67 @@ public class DBHandler {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
+    public void updateCustomer(Customer customer, String updated) {
+        int id = customer.getId();
+        String name = customer.getName();
+        String address = customer.getAddress();
+        String postal = customer.getPostal();
+        String phone = customer.getPhone();
+        String updater = Main.authenticator.getCurrentUser();
+        int div_id = customer.getDiv_id();
+        String country = customer.getCountry();
+        int country_id = customer.getCountry_id();
+        String division = customer.getDivision();
+
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/project", "root", "root");
+            PreparedStatement statement = connection.prepareStatement(
+                    "UPDATE customers " +
+                        "SET " +
+                        "Customer_Name = ?," +
+                        "Address = ?," +
+                        "Postal_Code = ?," +
+                        "Phone = ?," +
+                        "Last_Update = ?," +
+                        "Last_Updated_By = ?," +
+                        "Division_ID = ? WHERE " +
+                        "Customer_ID = ?");
+
+            statement.setString(1, name);
+            statement.setString(2, address);
+            statement.setString(3, postal);
+            statement.setString(4, phone);
+            statement.setString(5, updated);
+            statement.setString(6, updater);
+            statement.setInt(7, div_id);
+            statement.setInt(8, id);
+
+            statement.executeUpdate();
+
+            connection.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void removeCustomer(Customer customer) {
+        int id = customer.getId();
+
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/project", "root", "root");
+            PreparedStatement statement = connection.prepareStatement("DELETE FROM customers WHERE Customer_ID " +
+                    "= ?");
+
+            statement.setInt(1, id);
+
+            statement.executeUpdate();
+
+            connection.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void loadCustomers() {
@@ -288,9 +344,9 @@ public class DBHandler {
                 String address = resultSet.getString("Address");
                 String postal = resultSet.getString("Postal_Code");
                 String phone = resultSet.getString("Phone");
-                Timestamp created = resultSet.getTimestamp("Create_Date");
+                String created = resultSet.getString("Create_Date");
                 String creator = resultSet.getString("Created_By");
-                Timestamp updated = resultSet.getTimestamp("Last_Update");
+                String updated = resultSet.getString("Last_Update");
                 String updater = resultSet.getString("Last_Updated_By");
                 int div_id = resultSet.getInt("Division_ID");
                 String division = resultSet.getString("Division");
