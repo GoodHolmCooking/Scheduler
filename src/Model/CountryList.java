@@ -14,7 +14,18 @@ public class CountryList {
         countries.add(country);
     }
 
-    public String getCountry(int id) {
+    public Country fetchCountry(String desiredName) {
+        Country desiredCountry = null;
+        for (Country country : countries) {
+            if (country.getName().equals(desiredName)) {
+                desiredCountry = country;
+                break;
+            }
+        }
+        return desiredCountry;
+    }
+
+    public String getCountryName(int id) {
         String foundCountry = null;
 
         for (Country country : countries) {

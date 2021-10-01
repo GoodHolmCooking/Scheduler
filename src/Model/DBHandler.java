@@ -120,8 +120,6 @@ public class DBHandler {
                     "User_ID," +
                     "Contact_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-            Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-
             statement.setInt(1, appt_id); // Appointment ID
             statement.setTimestamp(2, start); // Start
             statement.setTimestamp(3, end); // End
@@ -218,6 +216,51 @@ public class DBHandler {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void addCustomer(Customer customer) {
+        int id = customer.getId();
+        String name = customer.getName();
+        String address = customer.getAddress();
+        String postal = customer.getPostal();
+        String phone = customer.getPhone();
+        Timestamp created = customer.getCreated();
+        String creator = customer.getCreator();
+        int div_id = customer.getDiv_id();
+
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/project", "root", "root");
+            PreparedStatement statement = connection.prepareStatement(
+                    "INSERT INTO customers (" +
+                            "Customer_ID, " +
+                            "Customer_Name, " +
+                            "Address, " +
+                            "Postal_Code, " +
+                            "Phone, " +
+                            "Create_Date, " +
+                            "Created_By, " +
+                            "Last_Update," +
+                            "Last_Updated_By," +
+                            "Division_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+            statement.setInt(1, id); // Customer ID
+            statement.setString(2, name); // Customer Name
+            statement.setString(3, address); // Address
+            statement.setString(4, postal); // Postal Code
+            statement.setString(5, phone); // Phone
+            statement.setTimestamp(6, created); // Create Date
+            statement.setString(7, creator); // Created By
+            statement.setTimestamp(8, null); // Last Update
+            statement.setString(9, null); // Last Updated By
+            statement.setInt(10, div_id); // Division ID
+
+            statement.executeUpdate();
+
+            connection.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void loadCustomers() {

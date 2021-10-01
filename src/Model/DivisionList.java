@@ -10,6 +10,27 @@ public class DivisionList {
         divisions.add(division);
     }
 
+    public Division fetchDivision(String desiredName) {
+        Division desiredDivision = null;
+        for (Division division : divisions) {
+            if (division.getName().equals(desiredName)) {
+                desiredDivision = division;
+            }
+        }
+        return desiredDivision;
+    }
+
+    public int getID(String desiredName) {
+        int desiredId = 0;
+        for (Division division : divisions) {
+            if (division.getName().equals(desiredName)) {
+                desiredId = division.getDiv_id();
+            }
+        }
+
+        return desiredId;
+    }
+
     public ObservableList<String> getDivisionNames(int id) {
         ObservableList<String> divisionNames = FXCollections.observableArrayList();
         for (Division division : divisions) {

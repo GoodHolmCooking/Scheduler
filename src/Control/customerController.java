@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.w3c.dom.Text;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -19,12 +20,16 @@ public class customerController implements Initializable {
 
 
     @FXML private TextField idField;
+    @FXML private TextField nameField;
+    @FXML private TextField addressField;
+    @FXML private TextField postalField;
+    @FXML private TextField phoneField;
     @FXML private ComboBox<String> countryBox;
     @FXML private ComboBox<String> divBox;
 
-
     public void onSave(ActionEvent event) throws Exception {
-        Main.custHandler.saveCustomer();
+        Main.custHandler.saveCustomer(event, idField, nameField, addressField, postalField, phoneField, countryBox,
+                divBox, stage, scene);
     }
 
     public void onCancel(ActionEvent event) throws Exception {
