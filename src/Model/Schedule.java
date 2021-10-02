@@ -103,12 +103,11 @@ public class Schedule {
         return current_id;
     }
 
-    public boolean doesApptExist(Appointment testAppt) {
-        int id = testAppt.getAppt_id();
+    public boolean doesApptExist(int testId) {
         boolean apptExists = false;
 
         for (Appointment appointment : appointments) {
-            if (id == appointment.getAppt_id()) {
+            if (testId == appointment.getAppt_id()) {
                 apptExists = true;
                 break;
             }

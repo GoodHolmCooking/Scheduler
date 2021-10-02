@@ -3,6 +3,10 @@ package Model;
 import Control.Main;
 
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class DBHandler {
     private void loadUsers() {
@@ -52,7 +56,20 @@ public class DBHandler {
                 String updated = resultSet.getString("Last_Update");
                 String updater = resultSet.getString("Last_Updated_By");
 
-                Appointment appointment = new Appointment(appt_id, start, end, title, type, description, location,
+                // Start
+                LocalDateTime startLdt = Timestamp.valueOf(start).toLocalDateTime();
+                ZonedDateTime startZdt = ZonedDateTime.of(startLdt, ZoneId.of("UTC"));
+                ZonedDateTime startLocTime = startZdt.withZoneSameInstant(ZoneId.systemDefault());
+                String formattedStart = startLocTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+                // End
+                LocalDateTime endLdt = Timestamp.valueOf(end).toLocalDateTime();
+                ZonedDateTime endZdt = ZonedDateTime.of(endLdt, ZoneId.of("UTC"));
+                ZonedDateTime endLocTime = endZdt.withZoneSameInstant(ZoneId.systemDefault());
+                String formattedEnd = endLocTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+                Appointment appointment = new Appointment(appt_id, formattedStart, formattedEnd, title, type, description,
+                        location,
                         cust_id, contact, user_id, created, creator);
 
                 // Manually added to not cause problems with constructor.
@@ -350,13 +367,15 @@ public class DBHandler {
                 String updater = resultSet.getString("Last_Updated_By");
                 int div_id = resultSet.getInt("Division_ID");
                 String division = resultSet.getString("Division");
+                if (division.equals("QuÃ©bec")) {
+                    division = "Québec";
+                }
+
                 String country = resultSet.getString("Country");
                 int country_id = resultSet.getInt("Country_ID");
 
                 Customer customer = new Customer(id, name, address, postal, phone, created, creator, div_id, division
                         , country_id, country);
-
-                // '222  Funk Street, Assville'
 
                 // Manually added to not affect constructor.
                 customer.setUpdated(updated);

@@ -19,6 +19,7 @@ public class CustomerList {
         for (Customer customer : customers) {
             if (customer.getName().equals(desiredName)) {
                 desiredId = customer.getId();
+                System.out.println(String.format("Customer found! ID is %d.", desiredId));
                 break;
             }
         }
@@ -36,13 +37,13 @@ public class CustomerList {
         return customerNames;
     }
 
-    public int getIndex(int desiredId){
+    public int getIndex(int desiredId) {
         int desiredIndex = 0;
         int loopIndex = 0;
         for (Customer customer : customers) {
             int id = customer.getId();
             if (id == desiredId) {
-                desiredId = id;
+                desiredIndex = loopIndex;
                 break;
             }
             else {

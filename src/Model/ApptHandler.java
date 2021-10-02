@@ -14,6 +14,9 @@ import javafx.stage.Stage;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
@@ -261,27 +264,66 @@ public class ApptHandler {
             int user_id_int = Integer.parseInt(user_id);
             Contact contact = Main.contactList.getContact(contactName);
 
-            Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-            String formatedTime = currentTime.toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            // Current Time
+            LocalDateTime ldt = LocalDateTime.now();
+            ZonedDateTime zdt = ZonedDateTime.of(ldt, ZoneId.systemDefault());
+            ZonedDateTime utc = zdt.withZoneSameInstant(ZoneId.of("UTC"));
+            String formattedTime = utc.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+            // Start Time
+            int startYear = pickedStartDate.getYear();
+            int startMonth = pickedStartDate.getMonthValue();
+            int startDay = pickedStartDate.getDayOfMonth();
+
+            LocalDateTime startLdt = LocalDateTime.of(
+                    startYear,
+                    startMonth,
+                    startDay,
+                    Integer.parseInt(startHr),
+                    Integer.parseInt(startMin)
+            );
+            ZonedDateTime startZdt = ZonedDateTime.of(startLdt, ZoneId.systemDefault());
+            ZonedDateTime startUtc = startZdt.withZoneSameInstant(ZoneId.of("UTC"));
+            String formattedStart = startUtc.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+            // End Time
+            int endYear = pickedEndDate.getYear();
+            int endMonth = pickedEndDate.getMonthValue();
+            int endDay = pickedEndDate.getDayOfMonth();
+
+            LocalDateTime endLdt = LocalDateTime.of(
+                    endYear,
+                    endMonth,
+                    endDay,
+                    Integer.parseInt(endHr),
+                    Integer.parseInt(endMin)
+            );
+            ZonedDateTime endZdt = ZonedDateTime.of(endLdt, ZoneId.systemDefault());
+            ZonedDateTime endUtc = endZdt.withZoneSameInstant(ZoneId.of("UTC"));
+            String formattedEnd = endUtc.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
             String creator = Main.authenticator.getCurrentUser();
 
-            Appointment appointment = new Appointment(appt_id, startDate, endDate, title, type, description, location
-                    , cust_id, contact, user_id_int, formatedTime, creator);
+            Appointment locAppointment = new Appointment(appt_id, startDate, endDate, title, type, description, location
+                    , cust_id, contact, user_id_int, formattedTime, creator);
 
-            boolean apptExists = Main.schedule.doesApptExist(appointment);
+            Appointment dbAppointment = new Appointment(appt_id, formattedStart, formattedEnd, title, type, description,
+                    location
+                    , cust_id, contact, user_id_int, formattedTime, creator);
+
+            boolean apptExists = Main.schedule.doesApptExist(appt_id);
 
             if (apptExists) { // An appointment of that ID was found, so let's update the appointment on file.
                 String updater = Main.authenticator.getCurrentUser();
-                Main.schedule.updateAppointment(appointment, updater, formatedTime);
-                Main.DBHandler.updateAppointment(appointment, updater, formatedTime);
+                Main.schedule.updateAppointment(locAppointment, updater, formattedTime);
+                Main.DBHandler.updateAppointment(dbAppointment, updater, formattedTime);
             }
             else { // No appointment of that ID exists, so let's create a new one.
                 // Add this new appointment to the backend of the program.
-                Main.schedule.addAppointment(appointment);
+                Main.schedule.addAppointment(locAppointment);
 
                 // Add this appointment to the persistent storage in the database.
-                Main.DBHandler.addAppointment(appointment);
+                Main.DBHandler.addAppointment(dbAppointment);
             }
             // Close the window and loadup the dashboard.
             loadDashboard(event, stage, scene);

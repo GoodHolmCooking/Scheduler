@@ -12,6 +12,9 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -166,18 +169,23 @@ public class CustHandler {
             String address = formatAddress(streetName, streetNum, city, country_id, divName);
 
             String creator = Main.authenticator.getCurrentUser();
-            Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-            String formatedTime = currentTime.toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+//            Timestamp currentTime = new Timestamp(System.currentTimeMillis());
 
-            Customer customer = new Customer(id, name, address, postal, phone, formatedTime, creator, div_id, divName,
+            LocalDateTime ldt = LocalDateTime.now();
+            ZonedDateTime zdt = ZonedDateTime.of(ldt, ZoneId.systemDefault());
+            ZonedDateTime utc = zdt.withZoneSameInstant(ZoneId.of("UTC"));
+            String formattedTime = utc.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+//            String formatedTime = currentTime.toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+            Customer customer = new Customer(id, name, address, postal, phone, formattedTime, creator, div_id, divName,
                     country_id, countryName);
 
             if (Main.customerList.customerExists(id)) {
                 // Update Customer List
-                Main.customerList.updateCustomer(customer, formatedTime);
+                Main.customerList.updateCustomer(customer, formattedTime);
 
                 // Update DB
-                Main.DBHandler.updateCustomer(customer, formatedTime);
+                Main.DBHandler.updateCustomer(customer, formattedTime);
             } else {
 
                 // Save to Customer List
