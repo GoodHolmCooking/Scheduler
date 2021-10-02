@@ -119,27 +119,35 @@ public class dashboardController implements Initializable {
     }
 
     public void updateCustomer(ActionEvent event) throws Exception {
-//        try {
+        try {
             // Select the customer from the table. Then store the id in an object to hold between windows.
             Customer selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
             Main.storage.setCustomerId(selectedCustomer.getId());
 
-            Parent root = FXMLLoader.load(getClass().getResource("../View/updateRedux.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("../View/custUpdate.fxml"));
             stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-//        }
-        // 215 Fake, Butt
-//        catch (Exception e) {
-//            noSelectionWarning("update");
-//        }
+        }
+        catch (Exception e) {
+            noSelectionWarning("update");
+        }
     }
 
     public void deleteCustomer(ActionEvent event) {
         try {
             Customer customer = customerTable.getSelectionModel().getSelectedItem();
-            Main.custHandler.deleteCustomer(customer);
+            boolean hasAppt = Main.schedule.doesCustHaveAppt(customer);
+            if (!hasAppt) {
+                Main.custHandler.deleteCustomer(customer);
+            }
+            else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText(null);
+                alert.setContentText(String.format("Please remove associated appointments before removing customer."));
+                alert.showAndWait();
+            }
         }
         catch (Exception e) {
             noSelectionWarning("delete");

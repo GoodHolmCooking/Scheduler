@@ -10,6 +10,19 @@ public class Schedule {
 
     public void addAppointment(Appointment appointment) { appointments.add(appointment); }
 
+    public boolean doesCustHaveAppt(Customer customer) {
+        boolean hasAppt = false;
+
+        for (Appointment appointment : appointments) {
+            if (appointment.getCust_id() == customer.getId()) {
+                hasAppt = true;
+                break;
+            }
+        }
+
+        return  hasAppt;
+    }
+
     public void updateAppointment(Appointment apptUpdate, String updater, String updated) {
         int updateId = apptUpdate.getAppt_id();
         String updateStart = apptUpdate.getStart();
