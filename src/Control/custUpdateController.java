@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class custUpdateController implements Initializable {
@@ -21,15 +22,17 @@ public class custUpdateController implements Initializable {
 
     @FXML private TextField idField;
     @FXML private TextField nameField;
-    @FXML private TextField addressField;
+    @FXML private TextField streetNameField;
+    @FXML private TextField streetNumField;
+    @FXML private TextField cityField;
     @FXML private TextField postalField;
     @FXML private TextField phoneField;
     @FXML private ComboBox<String> countryBox;
     @FXML private ComboBox<String> divBox;
 
     public void onSave(ActionEvent event) throws Exception {
-        Main.custHandler.saveCustomer(event, idField, nameField, addressField, postalField, phoneField, countryBox,
-                divBox, stage, scene);
+        Main.custHandler.saveCustomer(event, idField, nameField, postalField, phoneField, countryBox,
+                divBox, stage, scene, streetNameField, streetNumField, cityField);
     }
 
     public void onCancel(ActionEvent event) throws Exception {
@@ -56,8 +59,24 @@ public class custUpdateController implements Initializable {
         // Set name
         nameField.setText(customer.getName());
 
-        // Set address
-        addressField.setText(customer.getAddress());
+        HashMap<String, String> addressMap = customer.getAddressMap();
+        String streetName = addressMap.get("name");
+
+        String streetNum = addressMap.get("number");
+
+        String city = customer.getCity();
+
+        // Set street name
+        streetNameField.setText(streetName.strip());
+
+        // Set street number
+        streetNumField.setText(streetNum.strip());
+
+//        System.out.println(city);
+        // Set city
+        if (!city.isBlank()) {
+            cityField.setText(city.strip());
+        }
 
         // Set postal
         postalField.setText(customer.getPostal());

@@ -18,18 +18,19 @@ public class customerController implements Initializable {
     private Scene scene;
     private Parent root;
 
-
     @FXML private TextField idField;
     @FXML private TextField nameField;
-    @FXML private TextField addressField;
+    @FXML private TextField streetNameField;
+    @FXML private TextField streetNumField;
+    @FXML private TextField cityField;
     @FXML private TextField postalField;
     @FXML private TextField phoneField;
     @FXML private ComboBox<String> countryBox;
     @FXML private ComboBox<String> divBox;
 
     public void onSave(ActionEvent event) throws Exception {
-        Main.custHandler.saveCustomer(event, idField, nameField, addressField, postalField, phoneField, countryBox,
-                divBox, stage, scene);
+        Main.custHandler.saveCustomer(event, idField, nameField, postalField, phoneField, countryBox,
+                divBox, stage, scene, streetNameField, streetNumField, cityField);
     }
 
     public void onCancel(ActionEvent event) throws Exception {

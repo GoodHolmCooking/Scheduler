@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="356.0" prefWidth="809.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control.customerController">
+<AnchorPane prefHeight="356.0" prefWidth="809.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control.custUpdateController">
    <children>
       <GridPane layoutX="18.0" layoutY="19.0" prefHeight="295.0" prefWidth="768.0">
         <columnConstraints>

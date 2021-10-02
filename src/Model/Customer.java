@@ -1,5 +1,8 @@
 package Model;
 
+import java.util.Arrays;
+import java.util.HashMap;
+
 public class Customer {
     private int id;
     private String name;
@@ -31,6 +34,74 @@ public class Customer {
         this.updated = null;
         this.updater = null;
     }
+
+    private int findFirstLetterIndex(String searchString) {
+        int splitIndex = 0;
+        int loopIndex = 0;
+        for (char character : searchString.toCharArray()) {
+            try {
+                Integer.parseInt(String.valueOf(character));
+                loopIndex += 1;
+            }
+            catch (Exception e) { // Tries to convert. It can't. This is where the split should start.
+                splitIndex = loopIndex;
+            }
+        }
+
+        return splitIndex;
+    }
+
+    private boolean checkForCity(String searchString) {
+        boolean cityFound = false;
+
+        for (char character : searchString.toCharArray()) {
+            if (character == ',') {
+                cityFound = true;
+                break;
+            }
+        }
+
+        return cityFound;
+    }
+
+    public HashMap<String, String> getAddressMap() {
+        HashMap<String, String> addressMap = new HashMap<String, String>();
+        String[] splitAddress = this.address.split(",");
+        String numName = splitAddress[0];
+
+        System.out.println(numName);
+
+        int splitIndex = findFirstLetterIndex(numName);
+
+        String streetName = numName.substring(splitIndex);
+        String streetNum = numName.substring(0, splitIndex);
+
+        boolean cityFound = checkForCity(numName);
+        if (cityFound) {
+            String city = splitAddress[1];
+            addressMap.put("city", city);
+        }
+
+        addressMap.put("name", streetName);
+        addressMap.put("number", streetNum);
+
+        return addressMap;
+    }
+
+    public String getCity() {
+        String city = "";
+
+        String[] splitAddress = this.address.split(",");
+
+        int addressLen = (int) Arrays.stream(splitAddress).count();
+        if (addressLen > 1) {
+            city = splitAddress[1];
+        }
+
+        return city;
+    }
+
+
 
     public int getCountry_id() {
         return country_id;

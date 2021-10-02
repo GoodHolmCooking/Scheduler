@@ -22,23 +22,42 @@ public class CustHandler {
         stage.show();
     }
 
-    public void saveCustomer(ActionEvent event, TextField idField, TextField nameField, TextField addressField,
+    private String formatAddress(String streetName, String streetNum, String city, int country_id, String division) {
+        String address = null;
+
+
+        if (country_id == 2) { // If the address is in the UK
+            address = String.format("%s %s, %s, %s", streetNum, streetName, city, division);
+        }
+        else {
+            address = String.format("%s %s, %s", streetNum, streetName, city);
+        }
+
+        return address;
+    }
+
+    public void saveCustomer(ActionEvent event, TextField idField, TextField nameField,
                              TextField postalField,
                              TextField phoneField, ComboBox<String> countryBox, ComboBox<String> divBox, Stage stage,
-                             Scene scene
+                             Scene scene, TextField streetNameField, TextField streetNumField, TextField cityField
                              ) throws Exception {
 
         int id = Integer.parseInt(idField.getText());
-        String name = nameField.getText();
-        String address = addressField.getText();
-        String postal = postalField.getText();
-        String phone = phoneField.getText();
+        String name = nameField.getText().strip();
+
+        String postal = postalField.getText().strip();
+        String phone = phoneField.getText().strip();
 
         String countryName = countryBox.getSelectionModel().getSelectedItem();
         int country_id = Main.countryList.getId(countryName);
 
         String divName = divBox.getSelectionModel().getSelectedItem();
         int div_id = Main.divisionList.getID(divName);
+
+        String streetName = streetNameField.getText().strip();
+        String streetNum = streetNumField.getText().strip();
+        String city = cityField.getText().strip();
+        String address = formatAddress(streetName, streetNum, city, country_id, divName);
 
         String creator = Main.authenticator.getCurrentUser();
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());

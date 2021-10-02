@@ -356,6 +356,8 @@ public class DBHandler {
                 Customer customer = new Customer(id, name, address, postal, phone, created, creator, div_id, division
                         , country_id, country);
 
+                // '222  Funk Street, Assville'
+
                 // Manually added to not affect constructor.
                 customer.setUpdated(updated);
                 customer.setUpdater(updater);

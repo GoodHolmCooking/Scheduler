@@ -119,20 +119,21 @@ public class dashboardController implements Initializable {
     }
 
     public void updateCustomer(ActionEvent event) throws Exception {
-        try {
+//        try {
             // Select the customer from the table. Then store the id in an object to hold between windows.
             Customer selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
             Main.storage.setCustomerId(selectedCustomer.getId());
 
-            Parent root = FXMLLoader.load(getClass().getResource("../View/custUpdate.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("../View/updateRedux.fxml"));
             stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-        }
-        catch (Exception e) {
-            noSelectionWarning("update");
-        }
+//        }
+        // 215 Fake, Butt
+//        catch (Exception e) {
+//            noSelectionWarning("update");
+//        }
     }
 
     public void deleteCustomer(ActionEvent event) {

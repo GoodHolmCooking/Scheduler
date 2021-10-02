@@ -224,17 +224,17 @@ public class ApptHandler {
         ArrayList<String> errors = new ArrayList<String>();
 
         int appt_id = Integer.parseInt(apptField.getText());
-        String title = titleField.getText();
-        String description = descrField.getText();
-        String location = locField.getText();
+        String title = titleField.getText().strip();
+        String description = descrField.getText().strip();
+        String location = locField.getText().strip();
         String contactName = (String) contactBox.getSelectionModel().getSelectedItem();
-        String type = typeField.getText();
+        String type = typeField.getText().strip();
         LocalDate pickedStartDate = startDateField.getValue();
-        String startHr = startHrField.getText();
-        String startMin = startMinField.getText();
+        String startHr = startHrField.getText().strip();
+        String startMin = startMinField.getText().strip();
         LocalDate pickedEndDate = endDateField.getValue();
-        String endHr = endHrField.getText();
-        String endMin = endMinField.getText();
+        String endHr = endHrField.getText().strip();
+        String endMin = endMinField.getText().strip();
         String customerName = customerBox.getSelectionModel().getSelectedItem();
         int cust_id = Main.customerList.getCustomerId(customerName);
         String user_id = userField.getText();
