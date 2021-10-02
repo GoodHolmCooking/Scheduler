@@ -18,7 +18,6 @@ public class Main extends Application {
     public static CustomerList customerList = new CustomerList();
     public static DivisionList divisionList = new DivisionList();
     public static CountryList countryList = new CountryList();
-    public static Tracker tracker = new Tracker();
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -29,7 +28,6 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }
-
 
     public static void main(String[] args) {
         launch(args);

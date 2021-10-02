@@ -37,7 +37,7 @@ public class loginController implements Initializable {
         String password = pwordField.getText();
 
         if (Main.authenticator.authenticate(username, password)) {
-            Main.tracker.logAttempt(username, true);
+            Main.authenticator.logAttempt(username, true);
 
             Parent root = FXMLLoader.load(getClass().getResource("../View/dashboard.fxml"));
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -46,7 +46,7 @@ public class loginController implements Initializable {
             stage.show();
         }
         else {
-            Main.tracker.logAttempt(username, false);
+            Main.authenticator.logAttempt(username, false);
 
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText(null);
