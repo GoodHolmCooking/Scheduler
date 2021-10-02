@@ -18,6 +18,7 @@ public class Main extends Application {
     public static CustomerList customerList = new CustomerList();
     public static DivisionList divisionList = new DivisionList();
     public static CountryList countryList = new CountryList();
+    public static Tracker tracker = new Tracker();
 
     @Override
     public void start(Stage primaryStage) throws Exception{
