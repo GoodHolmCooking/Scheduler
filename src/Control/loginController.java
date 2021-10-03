@@ -7,10 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -39,8 +36,22 @@ public class loginController implements Initializable {
         if (Main.authenticator.authenticate(username, password)) {
             Main.authenticator.logAttempt(username, true);
 
+            if (Main.schedule.apptIn15()) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText(null);
+                alert.setContentText("You have an appointment in 15 minutes.");
+                alert.showAndWait();
+            }
+            else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText(null);
+                alert.setContentText("No upcoming appointments.");
+                alert.showAndWait();
+            }
+
             Parent root = FXMLLoader.load(getClass().getResource("../View/dashboard.fxml"));
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setTitle("Dashboard");
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
@@ -54,6 +65,8 @@ public class loginController implements Initializable {
             alert.showAndWait();
         }
     }
+
+
 
 
     @Override

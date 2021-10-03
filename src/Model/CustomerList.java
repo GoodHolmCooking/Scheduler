@@ -19,7 +19,6 @@ public class CustomerList {
         for (Customer customer : customers) {
             if (customer.getName().equals(desiredName)) {
                 desiredId = customer.getId();
-                System.out.println(String.format("Customer found! ID is %d.", desiredId));
                 break;
             }
         }
@@ -31,7 +30,10 @@ public class CustomerList {
         ObservableList<String> customerNames = FXCollections.observableArrayList();
 
         for (Customer customer : customers) {
-            customerNames.add(customer.getName());
+            String name = customer.getName();
+            int id = customer.getId();
+            String nameString = String.format("%d: %s", id, name);
+            customerNames.add(nameString);
         }
 
         return customerNames;
@@ -40,9 +42,9 @@ public class CustomerList {
     public int getIndex(int desiredId) {
         int desiredIndex = 0;
         int loopIndex = 0;
+
         for (Customer customer : customers) {
-            int id = customer.getId();
-            if (id == desiredId) {
+            if (customer.getId() == desiredId) {
                 desiredIndex = loopIndex;
                 break;
             }
@@ -51,7 +53,7 @@ public class CustomerList {
             }
         }
 
-        return desiredIndex;
+        return  desiredIndex;
     }
 
     public int getCurrentId() {

@@ -1,14 +1,26 @@
 package Model;
 
+import Control.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalUnit;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
 
 public class Schedule {
     private ObservableList<Appointment> appointments = FXCollections.observableArrayList();
 
-    public void addAppointment(Appointment appointment) { appointments.add(appointment); }
+    public void addAppointment(Appointment appointment) {
+        appointments.add(appointment);
+    }
 
     public boolean doesCustHaveAppt(Customer customer) {
         boolean hasAppt = false;
@@ -20,7 +32,7 @@ public class Schedule {
             }
         }
 
-        return  hasAppt;
+        return hasAppt;
     }
 
     public void updateAppointment(Appointment apptUpdate, String updater, String updated) {
@@ -114,6 +126,225 @@ public class Schedule {
         }
 
         return apptExists;
+    }
+
+    public boolean doesApptOverlap(String startDate, String endDate, int cust_id) {
+        boolean apptOverlaps = false;
+        Timestamp newStart = Timestamp.valueOf(startDate);
+        Timestamp newEnd = Timestamp.valueOf(endDate);
+
+        for (Appointment appointment : appointments) {
+            if (appointment.getCust_id() == cust_id) {
+                Timestamp start = Timestamp.valueOf(appointment.getStart());
+                Timestamp end = Timestamp.valueOf(appointment.getEnd());
+
+                if ((newStart.compareTo(start) > 0) && (newStart.compareTo(end) < 0)) {
+                    // Begins during another appointment.
+                    apptOverlaps = true;
+                    break;
+                } else if ((newEnd.compareTo(start) > 0) && (newEnd.compareTo(end) < 0)) {
+                    // Ends during another appointment.
+                    apptOverlaps = true;
+                    break;
+                }
+            }
+        }
+
+        return apptOverlaps;
+    }
+
+    public boolean apptIn15() {
+        boolean apptIn15 = false;
+        LocalDateTime currentLdt = LocalDateTime.now();
+        int curDay = currentLdt.getDayOfYear();
+        int curHour = currentLdt.getHour();
+        int curMin = currentLdt.getMinute();
+
+        int user = Main.authenticator.getCurrentId();
+
+        for (Appointment appointment : appointments) {
+            if (appointment.getUser_id() == user) {
+                Timestamp start = Timestamp.valueOf(appointment.getStart());
+                LocalDateTime startLdt = start.toLocalDateTime();
+                int startDay = startLdt.getDayOfYear();
+                int startHour = startLdt.getHour();
+                int startMinute = startLdt.getMinute();
+
+                if (curDay == startDay) {
+
+                    if (startHour > curHour) {
+                        // start hour is more than the current hour
+                        if ((startHour - curHour) == 1) {
+                            // start hour is exactly one hour greater than current time.
+                            if (curMin >= 45) {
+                                // check minute of next hour
+                                int timeUntilAppt = 60 - curMin + startMinute;
+                                if (timeUntilAppt <= 15) {
+                                    apptIn15 = true;
+                                }
+                            }
+                        } else if (startHour == curHour) {
+                            // start hour is the same
+                            int timeUntilAppt = startMinute - curMin;
+                            if ((timeUntilAppt <= 15) && (timeUntilAppt > 0)) {
+                                apptIn15 = true;
+                            }
+                        }
+                    }
+
+                }
+
+            }
+
+        }
+        return apptIn15;
+    }
+
+    private HashMap<String, Integer> updateMap(HashMap<String, Integer> map, String type) {
+        if (!map.containsKey(type)) { // No key has been found. Assign  it and set count to 1.
+            map.put(type, 1);
+        }
+        else { // if a key is found, increase the count by 1.
+            int oldValue = map.get(type);
+            map.put(type, oldValue + 1);
+        }
+
+        return map;
+    }
+
+    private String unloadMonthMap(HashMap<String, Integer> map, String month, String report) {
+        if (!map.isEmpty()) {
+            report += String.format("%s:\n", month);
+            for (String type : map.keySet()) {
+                int amt = map.get(type);
+                report += String.format("%s: %d \n", type, amt);
+            }
+        }
+
+        report += "\n";
+
+        return report;
+    }
+
+    public String totalByType() {
+
+        // HashMap per month
+        HashMap<String, Integer> janMap = new HashMap<String, Integer>();
+        HashMap<String, Integer> febMap = new HashMap<String, Integer>();
+        HashMap<String, Integer> marchMap = new HashMap<String, Integer>();
+        HashMap<String, Integer> aprilMap = new HashMap<String, Integer>();
+        HashMap<String, Integer> mayMap = new HashMap<String, Integer>();
+        HashMap<String, Integer> juneMap = new HashMap<String, Integer>();
+        HashMap<String, Integer> julyMap = new HashMap<String, Integer>();
+        HashMap<String, Integer> augMap = new HashMap<String, Integer>();
+        HashMap<String, Integer> septMap = new HashMap<String, Integer>();
+        HashMap<String, Integer> octMap = new HashMap<String, Integer>();
+        HashMap<String, Integer> novMap = new HashMap<String, Integer>();
+        HashMap<String, Integer> decMap = new HashMap<String, Integer>();
+
+        for (Appointment appointment : appointments) {
+            Timestamp start = Timestamp.valueOf(appointment.getStart());
+            int month = start.toLocalDateTime().getMonthValue();
+            String apptType = appointment.getType();
+
+
+            switch (month) {
+                case 1: // January
+                    janMap = updateMap(janMap, apptType);
+                    break;
+                case 2: // February
+                    febMap = updateMap(febMap, apptType);
+                    break;
+                case 3: // March
+                    marchMap = updateMap(marchMap, apptType);
+                    break;
+                case 4: // April
+                    aprilMap = updateMap(aprilMap, apptType);
+                    break;
+                case 5: // May
+                    mayMap = updateMap(mayMap, apptType);
+                    break;
+                case 6: // June
+                    juneMap = updateMap(juneMap, apptType);
+                    break;
+                case 7: // July
+                    julyMap = updateMap(julyMap, apptType);
+                    break;
+                case 8: // August
+                    augMap = updateMap(augMap, apptType);
+                    break;
+                case 9: // September
+                    septMap = updateMap(septMap, apptType);
+                    break;
+                case 10: // October
+                    octMap = updateMap(octMap, apptType);
+                    break;
+                case 11: // November
+                    novMap = updateMap(novMap, apptType);
+                    break;
+                case 12: // December
+                    decMap = updateMap(decMap, apptType);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        String report = "";
+
+        if (!janMap.isEmpty()) {
+            report = unloadMonthMap(janMap, "January", report);
+        }
+
+        if (!febMap.isEmpty()) {
+            report = unloadMonthMap(febMap, "February", report);
+        }
+
+        if (!marchMap.isEmpty()) {
+            report = unloadMonthMap(marchMap, "March", report);
+        }
+
+        if (!aprilMap.isEmpty()) {
+            report = unloadMonthMap(aprilMap, "April", report);
+
+        }
+
+        if (!mayMap.isEmpty()) {
+            report = unloadMonthMap(mayMap, "May", report);
+        }
+
+        if (!juneMap.isEmpty()) {
+            report = unloadMonthMap(juneMap, "June", report);
+        }
+
+        if (!julyMap.isEmpty()) {
+            report = unloadMonthMap(julyMap, "July", report);
+        }
+
+        if (!augMap.isEmpty()) {
+            report = unloadMonthMap(augMap, "August", report);
+        }
+
+        if (!septMap.isEmpty()) {
+            report = unloadMonthMap(septMap, "September", report);
+        }
+
+        if (!octMap.isEmpty()) {
+            report = unloadMonthMap(octMap, "October", report);
+        }
+
+        if (!novMap.isEmpty()) {
+            report = unloadMonthMap(novMap, "November", report);
+
+        }
+
+        if (!decMap.isEmpty()) {
+            report = unloadMonthMap(decMap, "December", report);
+        }
+
+        return report;
+
     }
 
     public void switchToWeekView() {

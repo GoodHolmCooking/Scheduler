@@ -18,7 +18,7 @@
         <menus>
           <Menu mnemonicParsing="false" text="Reports">
             <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
+              <MenuItem mnemonicParsing="false" onAction="#totalReport" text="Total Appointments" />
             </items>
           </Menu>
         </menus>
@@ -70,6 +70,7 @@
          </children>
       </HBox>
       <Label layoutX="52.0" layoutY="301.0" text="Customers" />
-      <TextArea layoutX="24.0" layoutY="572.0" prefHeight="302.0" prefWidth="1265.0" />
+      <TextArea fx:id="reportArea" editable="false" layoutX="24.0" layoutY="572.0" prefHeight="267.0" prefWidth="1265.0" />
+      <Button layoutX="1218.0" layoutY="849.0" mnemonicParsing="false" onAction="#clearReportArea" text="Clear" />
    </children>
 </AnchorPane>

@@ -32,6 +32,10 @@ public class Authenticator {
     public String getCurrentUser() {
         return currentUser;
     }
+    public int getCurrentId() {
+        int id = getId(this.currentUser);
+        return id;
+    }
     public int getId(String user) { return ids.get(user); }
 
     public void logAttempt(String username, boolean success) {

@@ -13,10 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
@@ -25,6 +22,7 @@ public class ApptHandler {
     private void loadDashboard(ActionEvent event, Stage stage, Scene scene) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("../View/dashboard.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        stage.setTitle("Dashboard");
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
@@ -233,12 +231,16 @@ public class ApptHandler {
         String contactName = (String) contactBox.getSelectionModel().getSelectedItem();
         String type = typeField.getText().strip();
         LocalDate pickedStartDate = startDateField.getValue();
+        DayOfWeek startWeekDay = pickedStartDate.getDayOfWeek();
         String startHr = startHrField.getText().strip();
         String startMin = startMinField.getText().strip();
         LocalDate pickedEndDate = endDateField.getValue();
+        DayOfWeek endWeekDay = pickedEndDate.getDayOfWeek();
         String endHr = endHrField.getText().strip();
         String endMin = endMinField.getText().strip();
-        String customerName = customerBox.getSelectionModel().getSelectedItem();
+        String customerString = customerBox.getSelectionModel().getSelectedItem();
+        int colonIndex = customerString.indexOf(":") + 1;
+        String customerName = customerString.substring(colonIndex).strip();
         int cust_id = Main.customerList.getCustomerId(customerName);
         String user_id = userField.getText();
         String startDate = null;
@@ -257,6 +259,63 @@ public class ApptHandler {
                 inputValid = false;
                 String warningString = "Start date must not be later than end date.";
                 errors.add(warningString);
+            }
+
+            // If day of week is Saturday or Sunday. Input invalid.
+            else if (
+                    (startWeekDay.equals(DayOfWeek.SATURDAY) || (startWeekDay.equals(DayOfWeek.SUNDAY))) ||
+                    (endWeekDay.equals(DayOfWeek.SUNDAY)) || endWeekDay.equals(DayOfWeek.SATURDAY)
+            ) {
+                inputValid = false;
+                String warningString = "Appointment date must not start or end on weekends.";
+                errors.add(warningString);
+            }
+            else if (Main.schedule.doesApptOverlap(startDate, endDate, cust_id)) {
+                inputValid = false;
+                String warningString = "Appointment date must not overlap with existing appointments.";
+                errors.add(warningString);
+            }
+
+            else {
+                // Start Time
+                int startYear = pickedStartDate.getYear();
+                int startMonth = pickedStartDate.getMonthValue();
+                int startDay = pickedStartDate.getDayOfMonth();
+
+                LocalDateTime startLdt = LocalDateTime.of(
+                        startYear,
+                        startMonth,
+                        startDay,
+                        Integer.parseInt(startHr),
+                        Integer.parseInt(startMin)
+                );
+                ZonedDateTime startZdt = ZonedDateTime.of(startLdt, ZoneId.systemDefault());
+                ZonedDateTime startEst = startZdt.withZoneSameInstant(ZoneId.of("UTC-04:00"));
+
+                // End Time
+                int endYear = pickedEndDate.getYear();
+                int endMonth = pickedEndDate.getMonthValue();
+                int endDay = pickedEndDate.getDayOfMonth();
+
+                LocalDateTime endLdt = LocalDateTime.of(
+                        endYear,
+                        endMonth,
+                        endDay,
+                        Integer.parseInt(endHr),
+                        Integer.parseInt(endMin)
+                );
+                ZonedDateTime endZdt = ZonedDateTime.of(endLdt, ZoneId.systemDefault());
+                ZonedDateTime endEst = endZdt.withZoneSameInstant(ZoneId.of("UTC-04:00"));
+
+                if (
+                        (startEst.getHour() < 8) || (startEst.getHour() > 21) ||
+                        (endEst.getHour() < 8) || (endEst.getHour() > 21)
+                ) {
+                    inputValid = false;
+                    String warningString = "Appointments must be scheduled between 8:00 a.m. and 10:00 p.m. EST.";
+                    errors.add(warningString);
+                }
+
             }
         }
 

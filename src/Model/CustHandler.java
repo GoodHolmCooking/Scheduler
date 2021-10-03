@@ -23,6 +23,7 @@ public class CustHandler {
     public void loadDashboard(ActionEvent event, Stage stage, Scene scene) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("../View/dashboard.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        stage.setTitle("Dashboard");
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();

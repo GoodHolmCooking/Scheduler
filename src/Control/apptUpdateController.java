@@ -116,11 +116,9 @@ public class apptUpdateController implements Initializable {
         int customer_id = selectedAppointment.getCust_id();
         customerBox.setItems(Main.customerList.getCustomerNames());
 
-        System.out.printf("Loaded ID is %d.", customer_id);
-
+        System.out.printf("Id being passed in is: %d", customer_id);
         int custIndex = Main.customerList.getIndex(customer_id);
-        System.out.printf("Found index upon update is %d.", custIndex);
-        customerBox.getSelectionModel().select(Main.customerList.getIndex(customer_id));
+        customerBox.getSelectionModel().select(custIndex);
 
 //        Load user id
         userField.setText(String.valueOf(selectedAppointment.getUser_id()));

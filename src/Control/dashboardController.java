@@ -34,6 +34,7 @@ public class dashboardController implements Initializable {
     @FXML private TableColumn<Appointment, String> displayCol;
 
     @FXML private RadioButton monthRadio, weekRadio;
+    @FXML private TextArea reportArea;
 
     @FXML private TableView<Customer> customerTable;
     @FXML private TableColumn<Customer, Integer> mainCustIdCol;
@@ -69,9 +70,18 @@ public class dashboardController implements Initializable {
         appointmentTable.refresh();
     }
 
+    public void totalReport() {
+        reportArea.setText(Main.schedule.totalByType());
+    }
+
+    public void clearReportArea() {
+        reportArea.setText("");
+    }
+
     public void addAppointment(ActionEvent event) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("../View/appointment.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        stage.setTitle("Manage Appointments");
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
@@ -86,6 +96,7 @@ public class dashboardController implements Initializable {
 
             Parent root = FXMLLoader.load(getClass().getResource("../View/apptUpdate.fxml"));
             stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setTitle("Manage Appointments");
             scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
@@ -113,6 +124,7 @@ public class dashboardController implements Initializable {
     public void addCustomer(ActionEvent event) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("../View/customer.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        stage.setTitle("Manage Customers");
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
@@ -126,6 +138,7 @@ public class dashboardController implements Initializable {
 
             Parent root = FXMLLoader.load(getClass().getResource("../View/custUpdate.fxml"));
             stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setTitle("Manage Customers");
             scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
