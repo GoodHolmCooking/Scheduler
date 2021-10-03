@@ -347,6 +347,83 @@ public class Schedule {
 
     }
 
+    public String getExpiredAppointments() {
+        // Current Time
+        LocalDateTime ldt = LocalDateTime.now();
+        ZonedDateTime zdt = ZonedDateTime.of(ldt, ZoneId.systemDefault());
+        ZonedDateTime utc = zdt.withZoneSameInstant(ZoneId.of("UTC"));
+        String currentTime = utc.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        Timestamp currentTs = Timestamp.valueOf(currentTime);
+
+        ArrayList<Appointment> expiredAppointments = new ArrayList<Appointment>();
+        for (Appointment appointment : appointments) {
+            String start = appointment.getStart();
+            Timestamp appointmentTs = Timestamp.valueOf(start);
+            if (currentTs.compareTo(appointmentTs) > 0) {
+                // If the current time is after the start date of an appointment. That appointment is expired.
+                expiredAppointments.add(appointment);
+            }
+        }
+
+        String report = "Expired Appointments:\n";
+        for (Appointment appointment : expiredAppointments) {
+            String title = appointment.getTitle();
+            int id = appointment.getAppt_id();
+            String start = appointment.getStart();
+            String end = appointment.getEnd();
+            report += String.format("\nID: %d\nTitle: %s\nStart Time: %s\nEnd Time: %s\n", id, title, start, end);
+        }
+
+        return report;
+    }
+
+    public String appointmentByContact() {
+        HashMap<Integer, ArrayList<Appointment>> contactAppointments = new HashMap<Integer, ArrayList<Appointment>>();
+
+        for (Contact contact : Main.contactList.getContacts()) {
+            ArrayList<Appointment> appointmentList = new ArrayList<>();
+            int id = contact.getId();
+
+            for (Appointment appointment : appointments) {
+                int foundId = appointment.getContact().getId();
+                if (id == foundId) { // appointment belongs to contact
+                    appointmentList.add(appointment);
+                }
+            }
+
+            if (!appointmentList.isEmpty()) {
+                contactAppointments.put(id, appointmentList);
+            }
+        }
+
+        String report = "";
+
+        for (int id : contactAppointments.keySet()) {
+            String contactName = Main.contactList.getContact(id).getName();
+            report += String.format("%s:\n", contactName);
+
+            ArrayList<Appointment> appointmentList = contactAppointments.get(id);
+            for (Appointment appointment: appointmentList) {
+                int appt_id = appointment.getAppt_id();
+                String title = appointment.getTitle();
+                String type = appointment.getType();
+                String description = appointment.getDescription();
+                String start = appointment.getStart();
+                String end = appointment.getEnd();
+                int cust_id = appointment.getCust_id();
+
+                report += String.format("%s - %s\nAppointment ID: %d\n%s\n%s - %s\nCustomer ID: %d\n\n", title,
+                        type, appt_id,
+                        description, start,
+                        end, cust_id);
+            }
+
+            report += "\n";
+        }
+
+        return report;
+    }
+
     public void switchToWeekView() {
         for (Appointment appointment : appointments) {
             appointment.displayWeek();

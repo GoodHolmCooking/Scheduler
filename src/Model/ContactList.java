@@ -45,7 +45,7 @@ public class ContactList {
         return desiredIndex;
     }
 
-    public ObservableList<String> getContacts() {
+    public ObservableList<String> getContactNames() {
         ObservableList<String> contactNames = FXCollections.observableArrayList();
         for (Contact contact : contacts) {
             String name = contact.getName();
@@ -53,5 +53,9 @@ public class ContactList {
         }
 
         return contactNames;
+    }
+
+    public ObservableList<Contact> getContacts() {
+        return contacts;
     }
 }

@@ -1,24 +1,16 @@
 package Control;
 
-import Model.Appointment;
-import Model.Contact;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.net.URL;
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 public class appointmentController implements Initializable {
@@ -71,7 +63,7 @@ public class appointmentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         apptField.setText(String.valueOf(Main.schedule.getCurrentId()));
-        contactBox.setItems(Main.contactList.getContacts());
+        contactBox.setItems(Main.contactList.getContactNames());
         contactBox.getSelectionModel().select(0);
         customerBox.setItems(Main.customerList.getCustomerNames());
         customerBox.getSelectionModel().select(0);

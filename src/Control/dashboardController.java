@@ -74,6 +74,14 @@ public class dashboardController implements Initializable {
         reportArea.setText(Main.schedule.totalByType());
     }
 
+    public void contactReport() {
+        reportArea.setText(Main.schedule.appointmentByContact());
+    }
+
+    public void expiredReport() {
+        reportArea.setText(Main.schedule.getExpiredAppointments());
+    }
+
     public void clearReportArea() {
         reportArea.setText("");
     }
@@ -154,6 +162,9 @@ public class dashboardController implements Initializable {
             boolean hasAppt = Main.schedule.doesCustHaveAppt(customer);
             if (!hasAppt) {
                 Main.custHandler.deleteCustomer(customer);
+                String name = customer.getName();
+                String report = String.format("%s has been deleted.", name);
+                reportArea.setText(report);
             }
             else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
