@@ -11,17 +11,21 @@ public class Authenticator {
     private final HashMap<String, Integer> ids = new HashMap<String, Integer>();
     private String currentUser = null;
 
-    public boolean authenticate(String suppliedUser, String suppliedPassword) {
-        boolean passwordCorrect = false;
-        if (passwords.containsKey(suppliedUser)) {
-            String correctPassword = passwords.get(suppliedUser);
-            if (suppliedPassword.equals(correctPassword)) {
-                passwordCorrect = true;
-                this.currentUser = suppliedUser;
-            }
-        }
+//    public boolean authenticate(String suppliedUser, String suppliedPassword) {
+//        boolean passwordCorrect = false;
+//        if (passwords.containsKey(suppliedUser)) {
+//            String correctPassword = passwords.get(suppliedUser);
+//            if (suppliedPassword.equals(correctPassword)) {
+//                passwordCorrect = true;
+//                this.currentUser = suppliedUser;
+//            }
+//        }
+//
+//        return passwordCorrect;
+//    }
 
-        return passwordCorrect;
+    public HashMap<String, String> getPasswords() {
+        return passwords;
     }
 
     public void addUser(String user, String password) {
@@ -37,6 +41,10 @@ public class Authenticator {
         return id;
     }
     public int getId(String user) { return ids.get(user); }
+
+    public void setCurrentUser(String currentUser) {
+        this.currentUser = currentUser;
+    }
 
     public void logAttempt(String username, boolean success) {
         // Timestamp

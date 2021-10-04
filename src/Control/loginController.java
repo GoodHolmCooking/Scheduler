@@ -1,5 +1,6 @@
 package Control;
 
+import Model.Validation;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +13,7 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 import java.time.ZoneId;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -33,7 +35,23 @@ public class loginController implements Initializable {
         String username = nameField.getText();
         String password = pwordField.getText();
 
-        if (Main.authenticator.authenticate(username, password)) {
+
+        Validation validation = (suppliedUser, suppliedPassword) -> {
+            boolean passwordCorrect = false;
+            HashMap<String,String> passwords = Main.authenticator.getPasswords();
+
+            if (passwords.containsKey(suppliedUser)) {
+                String correctPassword = passwords.get(suppliedUser);
+                if (suppliedPassword.equals(correctPassword)) {
+                    passwordCorrect = true;
+                }
+            }
+
+            return passwordCorrect;
+        };
+
+        if (validation.checkPassword(username, password)) {
+            Main.authenticator.setCurrentUser(username);
             Main.authenticator.logAttempt(username, true);
 
             if (Main.schedule.apptIn15()) {
