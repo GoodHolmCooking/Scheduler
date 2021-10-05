@@ -11,15 +11,21 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.List;
 
 public class CustHandler {
+
+    /**
+     *
+     * @param event the ActionEvent from the cancel button.
+     * @param stage the stage of the dashboard.
+     * @param scene the scene of the dashboard.
+     * @throws Exception the exception needed to make the function run.
+     */
     public void loadDashboard(ActionEvent event, Stage stage, Scene scene) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("../View/dashboard.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -29,6 +35,15 @@ public class CustHandler {
         stage.show();
     }
 
+    /**
+     * Formats the street address into a single string.
+     * @param streetName the street name of the address.
+     * @param streetNum the street number of the address.
+     * @param city the city of the address.
+     * @param country_id the country id of the address.
+     * @param division the division of the address.
+     * @return the address as a string.
+     */
     private String formatAddress(String streetName, String streetNum, String city, int country_id, String division) {
         String address = null;
 
@@ -43,6 +58,17 @@ public class CustHandler {
         return address;
     }
 
+    /**
+     * validates the fields of the customer form to make sure they are in the correct format.
+     * @param name the string found in the name field.
+     * @param phone the string found in the phone number field.
+     * @param streetNum string found in the street number field.
+     * @param streetName the string found in the street name field.
+     * @param city the string found in the city field.
+     * @param postal the string found in the postal field.
+     * @param errors a list of errors found when validating.
+     * @return a boolean stating if validation passed or failed.
+     */
     private boolean validateCustomer(String name, String phone, String streetNum, String streetName, String city,
                                      String postal, ArrayList<String> errors) {
         boolean inputValid = true;
@@ -59,10 +85,7 @@ public class CustHandler {
 
         // Check Phone Number
         if (inputValid) {
-            if (!phone.isBlank()) {
-                // Do something
-            }
-            else {
+            if (phone.isBlank()) {
                 inputValid = false;
                 if (!errors.contains(blankWarning)) {
                     errors.add(blankWarning);
@@ -94,8 +117,7 @@ public class CustHandler {
 
         // Check Street Name
         if (inputValid) {
-            if (!streetName.isBlank()) {}
-            else {
+            if (streetName.isBlank()) {
                 inputValid = false;
                 if (!errors.contains(blankWarning)) {
                     errors.add(blankWarning);
@@ -141,6 +163,22 @@ public class CustHandler {
         return inputValid;
     }
 
+    /**
+     * saves the customer.
+     * @param event the ActionEvent of the save button.
+     * @param idField the TextField of the
+     * @param nameField
+     * @param postalField
+     * @param phoneField
+     * @param countryBox
+     * @param divBox
+     * @param stage
+     * @param scene
+     * @param streetNameField
+     * @param streetNumField
+     * @param cityField
+     * @throws Exception the exception required to make this function run.
+     */
     public void saveCustomer(ActionEvent event, TextField idField, TextField nameField,
                              TextField postalField,
                              TextField phoneField, ComboBox<String> countryBox, ComboBox<String> divBox, Stage stage,
@@ -170,13 +208,11 @@ public class CustHandler {
             String address = formatAddress(streetName, streetNum, city, country_id, divName);
 
             String creator = Main.authenticator.getCurrentUser();
-//            Timestamp currentTime = new Timestamp(System.currentTimeMillis());
 
             LocalDateTime ldt = LocalDateTime.now();
             ZonedDateTime zdt = ZonedDateTime.of(ldt, ZoneId.systemDefault());
             ZonedDateTime utc = zdt.withZoneSameInstant(ZoneId.of("UTC"));
             String formattedTime = utc.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-//            String formatedTime = currentTime.toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
             Customer customer = new Customer(id, name, address, postal, phone, formattedTime, creator, div_id, divName,
                     country_id, countryName);
@@ -210,6 +246,10 @@ public class CustHandler {
         }
     }
 
+    /**
+     * deletes a customer.
+     * @param selectedCustomer the customer to delete.
+     */
     public void deleteCustomer(Customer selectedCustomer) {
 
         // Remove from Customer List

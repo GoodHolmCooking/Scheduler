@@ -31,11 +31,20 @@ public class loginController implements Initializable {
     @FXML
     private Button loginBtn;
 
+    /**
+     * checks the username and password. Logs in if correct.
+     * @param event the event of the login button.
+     * @throws Exception required to make function work.
+     */
     public void onLogin(ActionEvent event) throws Exception {
         String username = nameField.getText();
         String password = pwordField.getText();
 
 
+        /**
+         * compares the inputted username and password against the passwords on file. This function only runs once on
+         * program launch. More efficient as a lambda then a stored and repeatedly used function.
+         */
         Validation validation = (suppliedUser, suppliedPassword) -> {
             boolean passwordCorrect = false;
             HashMap<String,String> passwords = Main.authenticator.getPasswords();
@@ -83,8 +92,6 @@ public class loginController implements Initializable {
             alert.showAndWait();
         }
     }
-
-
 
 
     @Override

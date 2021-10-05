@@ -28,6 +28,14 @@ public class ApptHandler {
         stage.show();
     }
 
+    /**
+     * checks the time field to assure it is in the correct format.
+     * @param num the actual string being passed in.
+     * @param type specifies whether this is an hour or a minute field.
+     * @param inputValid boolean specifying if the input has been valid so far.
+     * @param errors a list of errors to modify.
+     * @return a boolean specifying if the check passed or not.
+     */
     private boolean checkTime(String num, String type, boolean inputValid, ArrayList<String> errors) {
 
         if (num.length() > 2) { // Do we have more than two characters?
@@ -77,6 +85,13 @@ public class ApptHandler {
         return inputValid;
     }
 
+    /**
+     * checks a generic number field.
+     * @param num the string being checked.
+     * @param inputValid a boolean specifying if the input has been valid so far.
+     * @param errors a list of errors.
+     * @return a boolean stating if the check passed.
+     */
     private boolean checkNum(String num, boolean inputValid, ArrayList<String> errors) {
         // Is every character here a number?
         for (char character : num.toCharArray()) {
@@ -94,6 +109,13 @@ public class ApptHandler {
         return inputValid;
     }
 
+    /**
+     * checks whether the specified field contains data.
+     * @param field the value found in the field being checked.
+     * @param inputValid whether the input has been valid so far.
+     * @param errors a list of errors found.
+     * @return a boolean stating if the check passed or failed.
+     */
     private boolean containsData(String field, boolean inputValid, ArrayList<String> errors) {
         if (inputValid) { // Are we valid so far? If not, we're skipping.
 
@@ -109,6 +131,22 @@ public class ApptHandler {
         return inputValid;
     }
 
+    /**
+     * Validates the fields on the appointment form to ensure data is in the correct format.
+     * @param title the string found in the title field.
+     * @param description the string found in the description field.
+     * @param location the string found in the location field.
+     * @param type the string found in the type field.
+     * @param startDate the date chosen from the start date picker.
+     * @param startHr the string found in the start hour field.
+     * @param startMin the string found in the start minute field.
+     * @param endDate the date chosen from the end date picker.
+     * @param endHr the string found in end hour field.
+     * @param endMin the string found in the end minute field.
+     * @param user_id the string found in the user id field.
+     * @param errors a list of errors to add to.
+     * @return a boolean stating whether the available inputs are valid are not.
+     */
     private boolean validateInput(String title, String description, String location,
                                   String type, LocalDate startDate, String startHr, String startMin, LocalDate endDate,
                                   String endHr, String endMin,
@@ -186,6 +224,13 @@ public class ApptHandler {
         return inputValid;
     }
 
+    /**
+     * converts data into a string compatible with the SQL database.
+     * @param pickedDate the date being passed in from the date picker.
+     * @param hr the hour from the hour field.
+     * @param min the minute from the minute field.
+     * @return the date formatted as a string.
+     */
     private String formatTimestamp(LocalDate pickedDate, String hr, String min) {
         // Check hr
         if (hr.length() == 1) {
@@ -202,7 +247,27 @@ public class ApptHandler {
         return dateString;
     }
 
-
+    /**
+     * Saves the appointment.
+     * @param event the ActionEvent from the save button.
+     * @param apptField the TextField containing the appointment id.
+     * @param titleField the TextField containing the title.
+     * @param descrField the TextField containing the description.
+     * @param locField the TextField containing the location.
+     * @param contactBox the ComboBox containing the contact.
+     * @param typeField the TextField containing the appointment.
+     * @param startDateField the DatePicker containing the start date of the appointment.
+     * @param startHrField the TextField containing the starting hour of the appointment.
+     * @param startMinField the TextField containing the starting minutes of the appointment.
+     * @param endDateField the DatePicker containing the ending date of the appointment.
+     * @param endHrField the TextField containing the ending hour of the appointment.
+     * @param endMinField the TextField containing the ending minute of the appointment.
+     * @param customerBox the ComboBox containing the appointment's customer.
+     * @param userField the TextField containing the user id.
+     * @param stage the Stage the form takes place on.
+     * @param scene the Scene the form takes place on.
+     * @throws Exception the exception needed to make this button run.
+     */
     public void onSave(
             ActionEvent event,
             TextField apptField,
@@ -401,6 +466,13 @@ public class ApptHandler {
         }
     }
 
+    /**
+     * Cancel saving and close out the appointment form. Reload the dashboard.
+     * @param event the ActionEvent associated with the cancel button.
+     * @param stage the Stage the appointment form takes place on.
+     * @param scene the Scene the appointment form takes place on.
+     * @throws Exception the exception needed to run the cancel button.
+     */
     public void onCancel(ActionEvent event, Stage stage, Scene scene) throws Exception {
         loadDashboard(event, stage, scene);
     }

@@ -3,28 +3,22 @@ package Model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
 public class CountryList {
     private ObservableList<Country> countries = FXCollections.observableArrayList();
 
+    /**
+     *
+     * @param country the country to add.
+     */
     public void addCountry(Country country) {
         countries.add(country);
     }
 
-    public Country fetchCountry(String desiredName) {
-        Country desiredCountry = null;
-        for (Country country : countries) {
-            if (country.getName().equals(desiredName)) {
-                desiredCountry = country;
-                break;
-            }
-        }
-        return desiredCountry;
-    }
-
+    /**
+     *
+     * @param id the id of the country whose index needs to be fetched.
+     * @return the index of the desired country.
+     */
     public int getIndex(int id) {
         int desiredIndex = 0;
         int loopIndex = 0;
@@ -42,19 +36,11 @@ public class CountryList {
         return desiredIndex;
     }
 
-    public String getCountryName(int id) {
-        String foundCountry = null;
-
-        for (Country country : countries) {
-            if (country.getId() == id) {
-                foundCountry = country.getName();
-                break;
-            }
-        }
-
-        return foundCountry;
-    }
-
+    /**
+     * Finds the country's id based on the name.
+     * @param countryToFind country whose id needs to be found.
+     * @return the id of the searched country.
+     */
     public int getId(String countryToFind) {
         int foundId = 0;
         for (Country country : countries) {
@@ -67,6 +53,10 @@ public class CountryList {
     }
 
 
+    /**
+     *
+     * @return a list of of country names.
+     */
     public ObservableList<String> getCountryList() {
         ObservableList<String> countryNames = FXCollections.observableArrayList();
 

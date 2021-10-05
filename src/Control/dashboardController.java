@@ -45,6 +45,10 @@ public class dashboardController implements Initializable {
     @FXML private TableColumn<Customer, String> countryCol;
     @FXML private TableColumn<Customer, String> divCol;
 
+    /**
+     * generates a warning when nothing is selected.
+     * @param type specifies if the user is trying to update or delete.
+     */
     private void noSelectionWarning(String type) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeaderText(null);
@@ -52,7 +56,10 @@ public class dashboardController implements Initializable {
         alert.showAndWait();
     }
 
-    public void sortByMonth(ActionEvent event) {
+    /**
+     * sets the appointment table to display appointments by month.
+     */
+    public void sortByMonth() {
         weekRadio.setSelected(false);
         weekRadio.setDisable(false);
         monthRadio.setDisable(true);
@@ -61,7 +68,10 @@ public class dashboardController implements Initializable {
         appointmentTable.refresh();
     }
 
-    public void sortByWeek(ActionEvent event) {
+    /**
+     * sets the appointment table to display appointments by week.
+     */
+    public void sortByWeek() {
         monthRadio.setSelected(false);
         monthRadio.setDisable(false);
         weekRadio.setDisable(true);
@@ -70,22 +80,39 @@ public class dashboardController implements Initializable {
         appointmentTable.refresh();
     }
 
+    /**
+     * runs a report displaying the total appointment type by month.
+     */
     public void totalReport() {
         reportArea.setText(Main.schedule.totalByType());
     }
 
+    /**
+     * runs a report displaying the schedules for each contact.
+     */
     public void contactReport() {
         reportArea.setText(Main.schedule.appointmentByContact());
     }
 
+    /**
+     * runs a report showing appointments that have passed the current time.
+     */
     public void expiredReport() {
         reportArea.setText(Main.schedule.getExpiredAppointments());
     }
 
+    /**
+     * clears the report area.
+     */
     public void clearReportArea() {
         reportArea.setText("");
     }
 
+    /**
+     * opens up the appointment form to add a new appointment.
+     * @param event the ActionEvent of the button clicked.
+     * @throws Exception required for function to run.
+     */
     public void addAppointment(ActionEvent event) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("../View/appointment.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -95,7 +122,11 @@ public class dashboardController implements Initializable {
         stage.show();
     }
 
-    public void updateAppointment(ActionEvent event) throws Exception {
+    /**
+     * opens the appointment form to update a selected appointment.
+     * @param event the ActionEvent of the button clicked.
+     */
+    public void updateAppointment(ActionEvent event) {
         try {
             Appointment selectedAppointment = appointmentTable.getSelectionModel().getSelectedItem();
 
@@ -114,6 +145,9 @@ public class dashboardController implements Initializable {
         }
     }
 
+    /**
+     * deletes an appointment.
+     */
     public void deleteAppointment(ActionEvent event) {
         try {
             // Remove from schedule
@@ -129,6 +163,11 @@ public class dashboardController implements Initializable {
 
     }
 
+    /**
+     * launches the customer form to add a new customer.
+     * @param event the ActionEvent of the button clicked.
+     * @throws Exception required for function to run.
+     */
     public void addCustomer(ActionEvent event) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("../View/customer.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -138,7 +177,11 @@ public class dashboardController implements Initializable {
         stage.show();
     }
 
-    public void updateCustomer(ActionEvent event) throws Exception {
+    /**
+     * updates an already existing customer.
+     * @param event the ActionEvent of the clicked button.
+     */
+    public void updateCustomer(ActionEvent event) {
         try {
             // Select the customer from the table. Then store the id in an object to hold between windows.
             Customer selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
@@ -156,7 +199,10 @@ public class dashboardController implements Initializable {
         }
     }
 
-    public void deleteCustomer(ActionEvent event) {
+    /**
+     * deletes a selected customer.
+     */
+    public void deleteCustomer() {
         try {
             Customer customer = customerTable.getSelectionModel().getSelectedItem();
             boolean hasAppt = Main.schedule.doesCustHaveAppt(customer);

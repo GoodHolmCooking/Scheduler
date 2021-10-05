@@ -27,14 +27,17 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-//        DBHandler.initializeData();
 
+        /**
+         * Lambda reaches into the SQL database and loads the objects from the database.
+         * Only run once during setup, more efficient as a lambda then a stored function.
+         */
         Loader loader = () -> {
             String user = "root";
             String password = "root";
             String url = "jdbc:mysql://127.0.0.1:3306/project";
 
-            // loadContactList();
+            // Load contact list
             try {
                 Connection connection = DriverManager.getConnection(url, user, password);
                 Statement statement = connection.createStatement();
@@ -54,7 +57,7 @@ public class Main extends Application {
                 e.printStackTrace();
             }
 
-            // loadSchedule();
+            // Load schedule
             try {
                 Connection connection = DriverManager.getConnection(url, user, password);
                 Statement statement = connection.createStatement();
@@ -106,7 +109,7 @@ public class Main extends Application {
                 e.printStackTrace();
             }
 
-            // loadCountries();
+            // Load countries
             try {
                 Connection connection = DriverManager.getConnection(url, user, password);
                 Statement statement = connection.createStatement();
@@ -129,7 +132,7 @@ public class Main extends Application {
                 e.printStackTrace();
             }
 
-            // loadDivisions();
+            // Load divisions
             try {
                 Connection connection = DriverManager.getConnection(url, user, password);
                 Statement statement = connection.createStatement();
@@ -157,7 +160,7 @@ public class Main extends Application {
                 e.printStackTrace();
             }
 
-            // loadCustomers();
+            // Load customers
             try {
                 Connection connection = DriverManager.getConnection(url, user, password);
                 Statement statement = connection.createStatement();
@@ -209,7 +212,7 @@ public class Main extends Application {
                 e.printStackTrace();
             }
 
-            // loadUsers();
+            // Load users
             try {
                 Connection connection = DriverManager.getConnection(url, user, password);
                 Statement statement = connection.createStatement();

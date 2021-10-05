@@ -35,6 +35,11 @@ public class Customer {
         this.updater = null;
     }
 
+    /**
+     * finds the index of the first letter of the string.
+     * @param searchString the string to search.
+     * @return returns the index of the first letter.
+     */
     private int findFirstLetterIndex(String searchString) {
         int splitIndex = 0;
         int loopIndex = 0;
@@ -45,12 +50,18 @@ public class Customer {
             }
             catch (Exception e) { // Tries to convert. It can't. This is where the split should start.
                 splitIndex = loopIndex;
+                break;
             }
         }
 
         return splitIndex;
     }
 
+    /**
+     * Looks at an address and sees if there is an address attached to it.
+     * @param searchString the string to search.
+     * @return a boolean stating if there was a city found in this string or not.
+     */
     private boolean checkForCity(String searchString) {
         boolean cityFound = false;
 
@@ -64,12 +75,14 @@ public class Customer {
         return cityFound;
     }
 
+    /**
+     *
+     * @return a HashMap storing the street name and the street number.
+     */
     public HashMap<String, String> getAddressMap() {
         HashMap<String, String> addressMap = new HashMap<String, String>();
         String[] splitAddress = this.address.split(",");
         String numName = splitAddress[0];
-
-        System.out.println(numName);
 
         int splitIndex = findFirstLetterIndex(numName);
 
@@ -88,6 +101,10 @@ public class Customer {
         return addressMap;
     }
 
+    /**
+     *
+     * @return returns the city from the customer's address.
+     */
     public String getCity() {
         String city = "";
 
@@ -102,107 +119,178 @@ public class Customer {
     }
 
 
-
+    /**
+     *
+     * @return the customer's country id.
+     */
     public int getCountry_id() {
         return country_id;
     }
 
+    /**
+     *
+     * @param country_id the country id to set.
+     */
     public void setCountry_id(int country_id) {
         this.country_id = country_id;
     }
 
+    /**
+     *
+     * @return the customer's country.
+     */
     public String getCountry() {
         return country;
     }
 
+    /**
+     *
+     * @param country the country to set.
+     */
     public void setCountry(String country) {
         this.country = country;
     }
 
+    /**
+     *
+     * @return the division the customer lives in.
+     */
     public String getDivision() {
         return division;
     }
 
+    /**
+     *
+     * @param division the country to division to set.
+     */
     public void setDivision(String division) {
         this.division = division;
     }
 
+    /**
+     *
+     * @return the customer's id.
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     *
+     * @param id the id to set.
+     */
     public void setId(int id) {
         this.id = id;
     }
 
+    /**
+     *
+     * @return the customer's name.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     *
+     * @param name the name to set.
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     *
+     * @return the customer's address.
+     */
     public String getAddress() {
         return address;
     }
 
+    /**
+     *
+     * @param address the address to set.
+     */
     public void setAddress(String address) {
         this.address = address;
     }
 
+    /**
+     *
+     * @return the customer's postal code.
+     */
     public String getPostal() {
         return postal;
     }
 
+    /**
+     *
+     * @param postal the postal code to set.
+     */
     public void setPostal(String postal) {
         this.postal = postal;
     }
 
+    /**
+     *
+     * @return the customer's phone number.
+     */
     public String getPhone() {
         return phone;
     }
 
+    /**
+     *
+     * @param phone the phone number to set.
+     */
     public void setPhone(String phone) {
         this.phone = phone;
     }
 
+    /**
+     *
+     * @return the time the customer was created.
+     */
     public String getCreated() {
         return created;
     }
 
-    public void setCreated(String created) {
-        this.created = created;
-    }
-
+    /**
+     *
+     * @return the user that created this customer.
+     */
     public String getCreator() {
         return creator;
     }
 
-    public void setCreator(String creator) {
-        this.creator = creator;
-    }
-
-    public String getUpdated() {
-        return updated;
-    }
-
+    /**
+     *
+     * @param updated the last time this customer was updated.
+     */
     public void setUpdated(String updated) {
         this.updated = updated;
     }
 
-    public String getUpdater() {
-        return updater;
-    }
-
+    /**
+     *
+     * @param updater the user that last updated this customer.
+     */
     public void setUpdater(String updater) {
         this.updater = updater;
     }
 
+    /**
+     *
+     * @return the division id of this customer.
+     */
     public int getDiv_id() {
         return div_id;
     }
 
+    /**
+     *
+     * @param div_id the division id to set.
+     */
     public void setDiv_id(int div_id) {
         this.div_id = div_id;
     }

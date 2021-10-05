@@ -6,20 +6,19 @@ import javafx.collections.ObservableList;
 public class DivisionList {
     private ObservableList<Division> divisions = FXCollections.observableArrayList();
 
+    /**
+     * adds a division to the list.
+     * @param division the division to add.
+     */
     public void addDivision(Division division){
         divisions.add(division);
     }
 
-    public Division fetchDivision(String desiredName) {
-        Division desiredDivision = null;
-        for (Division division : divisions) {
-            if (division.getName().equals(desiredName)) {
-                desiredDivision = division;
-            }
-        }
-        return desiredDivision;
-    }
-
+    /**
+     * gets a divison id based on the divison's name.
+     * @param desiredName the name of the division to find.
+     * @return the id of the division.
+     */
     public int getID(String desiredName) {
         int desiredId = 0;
         for (Division division : divisions) {
@@ -31,6 +30,11 @@ public class DivisionList {
         return desiredId;
     }
 
+    /**
+     * Retrieves divisions based off of a country id.
+     * @param id the id of the country whose divisions need to be fetched.
+     * @return a list of divisions found for a specified country id.
+     */
     public ObservableList<String> getDivisionNames(int id) {
         ObservableList<String> divisionNames = FXCollections.observableArrayList();
         for (Division division : divisions) {
@@ -43,20 +47,25 @@ public class DivisionList {
         return divisionNames;
     }
 
+    /**
+     * finds the index a division based on a supplied id.
+     * @param id the id of the division to find.
+     * @return the index of the desired division.
+     */
     public int getIndex(int id) {
-        int desiredId = 0;
-        int loopId = 0;
+        int desiredIndex = 0;
+        int loopIndex = 0;
 
         for (Division division : divisions) {
-            if (division.getDiv_id() == desiredId) {
-                desiredId = loopId;
+            if (division.getDiv_id() == id) {
+                desiredIndex = loopIndex;
                 break;
             }
             else {
-                loopId += 1;
+                loopIndex += 1;
             }
         }
 
-        return desiredId;
+        return desiredIndex;
     }
 }

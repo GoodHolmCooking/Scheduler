@@ -4,7 +4,14 @@ import Control.Main;
 import java.sql.*;
 
 public class DBHandler {
+    private String url = "jdbc:mysql://127.0.0.1:3306/project";
+    private String userName = "root";
+    private String password = "root";
 
+    /**
+     * adds an appointment to the database.
+     * @param appointment the appointment to add.
+     */
     public void addAppointment(Appointment appointment) {
         int appt_id = appointment.getAppt_id();
         String start = appointment.getStart();
@@ -20,7 +27,7 @@ public class DBHandler {
         String created = appointment.getCreated();
 
         try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/project", "root", "root");
+            Connection connection = DriverManager.getConnection(url, userName, password);
             PreparedStatement statement = connection.prepareStatement(
             "INSERT INTO appointments (" +
                 "Appointment_ID, " +
@@ -61,6 +68,12 @@ public class DBHandler {
         }
     }
 
+    /**
+     * updates an existing appointment.
+     * @param appointment the updated appointment.
+     * @param updater the user that created this update.
+     * @param updated the time this update was created.
+     */
     public void updateAppointment(Appointment appointment, String updater, String updated) {
         int appt_id = appointment.getAppt_id();
         String start = appointment.getStart();
@@ -74,7 +87,7 @@ public class DBHandler {
         int contact_id = appointment.getContact().getId();
 
         try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/project", "root", "root");
+            Connection connection = DriverManager.getConnection(url, userName, password);
             PreparedStatement statement = connection.prepareStatement(
                     "UPDATE appointments " +
                         "SET " +
@@ -112,11 +125,15 @@ public class DBHandler {
         }
     }
 
+    /**
+     * removes an appointment from the database.
+     * @param appointment the appointment to remove.
+     */
     public void removeAppointment(Appointment appointment) {
         int appt_id = appointment.getAppt_id();
 
         try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/project", "root", "root");
+            Connection connection = DriverManager.getConnection(url, userName, password);
             PreparedStatement statement = connection.prepareStatement("DELETE FROM appointments WHERE Appointment_ID " +
                     "= ?");
 
@@ -130,6 +147,10 @@ public class DBHandler {
         }
     }
 
+    /**
+     * adds a customer to the database.
+     * @param customer the customer to add.
+     */
     public void addCustomer(Customer customer) {
         int id = customer.getId();
         String name = customer.getName();
@@ -141,7 +162,7 @@ public class DBHandler {
         int div_id = customer.getDiv_id();
 
         try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/project", "root", "root");
+            Connection connection = DriverManager.getConnection(url, userName, password);
             PreparedStatement statement = connection.prepareStatement(
                     "INSERT INTO customers (" +
                             "Customer_ID, " +
@@ -174,6 +195,11 @@ public class DBHandler {
         }
     }
 
+    /**
+     * updates an existing customer.
+     * @param customer the customer object holding the udpate information.
+     * @param updated the timestamp of when this update was created.
+     */
     public void updateCustomer(Customer customer, String updated) {
         int id = customer.getId();
         String name = customer.getName();
@@ -182,12 +208,9 @@ public class DBHandler {
         String phone = customer.getPhone();
         String updater = Main.authenticator.getCurrentUser();
         int div_id = customer.getDiv_id();
-        String country = customer.getCountry();
-        int country_id = customer.getCountry_id();
-        String division = customer.getDivision();
 
         try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/project", "root", "root");
+            Connection connection = DriverManager.getConnection(url, userName, password);
             PreparedStatement statement = connection.prepareStatement(
                     "UPDATE customers " +
                         "SET " +
@@ -217,11 +240,15 @@ public class DBHandler {
         }
     }
 
+    /**
+     * removes a customer from the database.
+     * @param customer the customer to be removed from the database.
+     */
     public void removeCustomer(Customer customer) {
         int id = customer.getId();
 
         try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/project", "root", "root");
+            Connection connection = DriverManager.getConnection(url, userName, password);
             PreparedStatement statement = connection.prepareStatement("DELETE FROM customers WHERE Customer_ID " +
                     "= ?");
 

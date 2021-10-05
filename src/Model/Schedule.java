@@ -4,24 +4,30 @@ import Control.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 
 public class Schedule {
     private ObservableList<Appointment> appointments = FXCollections.observableArrayList();
 
+    /**
+     * adds an appointment to the list of appointments.
+     * @param appointment the appointment to add.
+     */
     public void addAppointment(Appointment appointment) {
         appointments.add(appointment);
     }
 
+    /**
+     * checks to see if a given customer has any appointments.
+     * @param customer the customer to check.
+     * @return a boolean stating if the customer has any appointments or not.
+     */
     public boolean doesCustHaveAppt(Customer customer) {
         boolean hasAppt = false;
 
@@ -35,6 +41,12 @@ public class Schedule {
         return hasAppt;
     }
 
+    /**
+     * updates an existing appointment.
+     * @param apptUpdate the appointment object holding the updated information.
+     * @param updater the user that issued the update.
+     * @param updated the time this update was issued.
+     */
     public void updateAppointment(Appointment apptUpdate, String updater, String updated) {
         int updateId = apptUpdate.getAppt_id();
         String updateStart = apptUpdate.getStart();
@@ -69,6 +81,10 @@ public class Schedule {
         foundAppointment.setUpdater(updater);
     }
 
+    /**
+     * removes an appointment from the schedule.
+     * @param selectedAppointment the appointment to remove.
+     */
     public void removeAppointment(Appointment selectedAppointment) {
         int id = selectedAppointment.getAppt_id();
         int loopIndex = 0;
@@ -85,6 +101,11 @@ public class Schedule {
         appointments.remove(selectedApptIndex);
     }
 
+    /**
+     * returns an appointment based on a supplied id.
+     * @param desiredId the id of the appointment to retrieve.
+     * @return the appointment found based on the supplied id.
+     */
     public Appointment getAppointment(int desiredId) {
         Appointment foundAppointment = null;
         for (Appointment appointment : appointments) {
@@ -98,10 +119,18 @@ public class Schedule {
         return foundAppointment;
     }
 
+    /**
+     *
+     * @return the list of appointments.
+     */
     public ObservableList<Appointment> getAppointments() {
         return appointments;
     }
 
+    /**
+     * generates an id for new appointments.
+     * @return the new id.
+     */
     public int getCurrentId() {
         int highest_id = 0;
         for (Appointment appointment : appointments) {
@@ -115,6 +144,11 @@ public class Schedule {
         return current_id;
     }
 
+    /**
+     * Checks to see if an appointment already exists based on a supplied appointment id.
+     * @param testId the id to check.
+     * @return a boolean stating if the appointment exists or not.
+     */
     public boolean doesApptExist(int testId) {
         boolean apptExists = false;
 
@@ -128,6 +162,13 @@ public class Schedule {
         return apptExists;
     }
 
+    /**
+     * checks to see if a given customer has any overlapping appointments.
+     * @param startDate the starting date of the appointment.
+     * @param endDate the ending date of teh appointment.
+     * @param cust_id the id of the customer associated with the appointment.
+     * @return a boolean stating if an appointment overlaps with existing appointments or not.
+     */
     public boolean doesApptOverlap(String startDate, String endDate, int cust_id) {
         boolean apptOverlaps = false;
         Timestamp newStart = Timestamp.valueOf(startDate);
@@ -153,6 +194,10 @@ public class Schedule {
         return apptOverlaps;
     }
 
+    /**
+     * checks to see if there are any appointments within 15 minutes of the current time.
+     * @return a boolean stating if there are any appointments within 15 minutes from the current time.
+     */
     public boolean apptIn15() {
         boolean apptIn15 = false;
         LocalDateTime currentLdt = LocalDateTime.now();
@@ -200,6 +245,12 @@ public class Schedule {
         return apptIn15;
     }
 
+    /**
+     * update a HashMap with new information.
+     * @param map the HashMap to update.
+     * @param type the typeString to add as a key.
+     * @return the updated HashMap.
+     */
     private HashMap<String, Integer> updateMap(HashMap<String, Integer> map, String type) {
         if (!map.containsKey(type)) { // No key has been found. Assign  it and set count to 1.
             map.put(type, 1);
@@ -212,6 +263,13 @@ public class Schedule {
         return map;
     }
 
+    /**
+     * Unpacks a HashMap into a formatted report string.
+     * @param map the HashMap to unpack.
+     * @param month the month string.
+     * @param report the report string this information will be added to.
+     * @return the updated report.
+     */
     private String unloadMonthMap(HashMap<String, Integer> map, String month, String report) {
         if (!map.isEmpty()) {
             report += String.format("%s:\n", month);
@@ -226,6 +284,10 @@ public class Schedule {
         return report;
     }
 
+    /**
+     * generates a report of the total appointment types by month.
+     * @return the generated report.
+     */
     public String totalByType() {
 
         // HashMap per month
@@ -347,6 +409,10 @@ public class Schedule {
 
     }
 
+    /**
+     * generates a report of appointments whose start time are past the current time.
+     * @return the generated report.
+     */
     public String getExpiredAppointments() {
         // Current Time
         LocalDateTime ldt = LocalDateTime.now();
@@ -377,6 +443,10 @@ public class Schedule {
         return report;
     }
 
+    /**
+     * generates a report of all the appointments associated with a contact.
+     * @return the generated report.
+     */
     public String appointmentByContact() {
         HashMap<Integer, ArrayList<Appointment>> contactAppointments = new HashMap<Integer, ArrayList<Appointment>>();
 
@@ -424,12 +494,18 @@ public class Schedule {
         return report;
     }
 
+    /**
+     * sets the display of every appointment to the week view.
+     */
     public void switchToWeekView() {
         for (Appointment appointment : appointments) {
             appointment.displayWeek();
         }
     }
 
+    /**
+     * sets the display of every appointment to the month view.
+     */
     public void switchToMonthView() {
         for (Appointment appointment : appointments) {
             appointment.displayMonth();
