@@ -25,13 +25,15 @@ public class Main extends Application {
     public static DivisionList divisionList = new DivisionList();
     public static CountryList countryList = new CountryList();
 
+    /**
+     * Start
+     * This method launches the program and contains the first of two lambda expressions. The lambda creates a one
+     * time connection to the SQL database and loads all the needed data. This is created as a lambda because this
+     * method is only accessed once and not repeatedly.
+     */
+
     @Override
     public void start(Stage primaryStage) throws Exception{
-
-        /**
-         * Lambda reaches into the SQL database and loads the objects from the database.
-         * Only run once during setup, more efficient as a lambda then a stored function.
-         */
         Loader loader = () -> {
             String user = "root";
             String password = "root";

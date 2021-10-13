@@ -1,5 +1,6 @@
 package Control;
 
+import Model.Appointment;
 import Model.Validation;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -32,7 +33,9 @@ public class loginController implements Initializable {
     private Button loginBtn;
 
     /**
-     * checks the username and password. Logs in if correct.
+     * checks the username and password. Logs in if correct. This contains the second lambda expression. The lambda
+     * checks the username and password based on what has been stored from the inital database load. This is run as a
+     * lambda because this occurs only once at the top of the program instead of a repeated function.
      * @param event the event of the login button.
      * @throws Exception required to make function work.
      */
@@ -41,10 +44,6 @@ public class loginController implements Initializable {
         String password = pwordField.getText();
 
 
-        /**
-         * compares the inputted username and password against the passwords on file. This function only runs once on
-         * program launch. More efficient as a lambda then a stored and repeatedly used function.
-         */
         Validation validation = (suppliedUser, suppliedPassword) -> {
             boolean passwordCorrect = false;
             HashMap<String,String> passwords = Main.authenticator.getPasswords();
@@ -62,11 +61,19 @@ public class loginController implements Initializable {
         if (validation.checkPassword(username, password)) {
             Main.authenticator.setCurrentUser(username);
             Main.authenticator.logAttempt(username, true);
+            Appointment foundAppointment = Main.schedule.apptIn15();
 
-            if (Main.schedule.apptIn15()) {
+            if (foundAppointment != null) {
+                int id = foundAppointment.getAppt_id();
+                String startTime = foundAppointment.getStart();
+
+                String warning =
+                        String.format("You have an upcoming appointment.\nAppointment ID: %d\nApointment begins at " +
+                                "%s", id, startTime);
+
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setHeaderText(null);
-                alert.setContentText("You have an appointment in 15 minutes.");
+                alert.setContentText(warning);
                 alert.showAndWait();
             }
             else {
@@ -92,7 +99,6 @@ public class loginController implements Initializable {
             alert.showAndWait();
         }
     }
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

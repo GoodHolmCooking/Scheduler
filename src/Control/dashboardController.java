@@ -32,6 +32,7 @@ public class dashboardController implements Initializable {
     @FXML private TableColumn<Appointment, String> locCol;
     @FXML private TableColumn<Appointment, Integer> custIdCol;
     @FXML private TableColumn<Appointment, String> displayCol;
+    @FXML private TableColumn<Appointment, String> userCol;
 
     @FXML private RadioButton monthRadio, weekRadio;
     @FXML private TextArea reportArea;
@@ -156,6 +157,12 @@ public class dashboardController implements Initializable {
 
             // Remove from DB
             Main.DBHandler.removeAppointment(selectedAppointment);
+
+            int id = selectedAppointment.getAppt_id();
+            String type = selectedAppointment.getType();
+
+            String report = String.format("Appointment ID: %d (Type: %s) has been canceled.", id, type);
+            reportArea.setText(report);
         }
         catch (Exception e) {
             noSelectionWarning("delete");
@@ -237,6 +244,7 @@ public class dashboardController implements Initializable {
         locCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("location"));
         custIdCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("cust_id"));
         displayCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("display"));
+        userCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("user_id"));
         appointmentTable.setItems(Main.schedule.getAppointments());
         appointmentTable.getSortOrder().add(displayCol);
 

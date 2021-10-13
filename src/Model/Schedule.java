@@ -169,24 +169,26 @@ public class Schedule {
      * @param cust_id the id of the customer associated with the appointment.
      * @return a boolean stating if an appointment overlaps with existing appointments or not.
      */
-    public boolean doesApptOverlap(String startDate, String endDate, int cust_id) {
+    public boolean doesApptOverlap(String startDate, String endDate, int cust_id, int appt_id) {
         boolean apptOverlaps = false;
         Timestamp newStart = Timestamp.valueOf(startDate);
         Timestamp newEnd = Timestamp.valueOf(endDate);
 
         for (Appointment appointment : appointments) {
-            if (appointment.getCust_id() == cust_id) {
-                Timestamp start = Timestamp.valueOf(appointment.getStart());
-                Timestamp end = Timestamp.valueOf(appointment.getEnd());
+            if (appt_id != appointment.getAppt_id()) {
+                if (appointment.getCust_id() == cust_id) {
+                    Timestamp start = Timestamp.valueOf(appointment.getStart());
+                    Timestamp end = Timestamp.valueOf(appointment.getEnd());
 
-                if ((newStart.compareTo(start) > 0) && (newStart.compareTo(end) < 0)) {
-                    // Begins during another appointment.
-                    apptOverlaps = true;
-                    break;
-                } else if ((newEnd.compareTo(start) > 0) && (newEnd.compareTo(end) < 0)) {
-                    // Ends during another appointment.
-                    apptOverlaps = true;
-                    break;
+                    if ((newStart.compareTo(start) > 0) && (newStart.compareTo(end) < 0)) {
+                        // Begins during another appointment.
+                        apptOverlaps = true;
+                        break;
+                    } else if ((newEnd.compareTo(start) > 0) && (newEnd.compareTo(end) < 0)) {
+                        // Ends during another appointment.
+                        apptOverlaps = true;
+                        break;
+                    }
                 }
             }
         }
@@ -196,16 +198,17 @@ public class Schedule {
 
     /**
      * checks to see if there are any appointments within 15 minutes of the current time.
-     * @return a boolean stating if there are any appointments within 15 minutes from the current time.
+     * @return the appointment found to be within 15 minutes.
      */
-    public boolean apptIn15() {
-        boolean apptIn15 = false;
+    public Appointment apptIn15() {
         LocalDateTime currentLdt = LocalDateTime.now();
         int curDay = currentLdt.getDayOfYear();
         int curHour = currentLdt.getHour();
         int curMin = currentLdt.getMinute();
-
         int user = Main.authenticator.getCurrentId();
+
+
+        Appointment foundAppointment = null;
 
         for (Appointment appointment : appointments) {
             if (appointment.getUser_id() == user) {
@@ -214,8 +217,8 @@ public class Schedule {
                 int startDay = startLdt.getDayOfYear();
                 int startHour = startLdt.getHour();
                 int startMinute = startLdt.getMinute();
-
                 if (curDay == startDay) {
+
 
                     if (startHour > curHour) {
                         // start hour is more than the current hour
@@ -225,24 +228,24 @@ public class Schedule {
                                 // check minute of next hour
                                 int timeUntilAppt = 60 - curMin + startMinute;
                                 if (timeUntilAppt <= 15) {
-                                    apptIn15 = true;
+                                    foundAppointment = appointment;
                                 }
-                            }
-                        } else if (startHour == curHour) {
-                            // start hour is the same
-                            int timeUntilAppt = startMinute - curMin;
-                            if ((timeUntilAppt <= 15) && (timeUntilAppt > 0)) {
-                                apptIn15 = true;
                             }
                         }
                     }
-
+                    else if (startHour == curHour) {
+                        // start hour is the same
+                        int timeUntilAppt = startMinute - curMin;
+                        if ((timeUntilAppt <= 15) && (timeUntilAppt > 0)) {
+                            foundAppointment = appointment;
+                        }
+                    }
                 }
 
             }
 
         }
-        return apptIn15;
+        return foundAppointment;
     }
 
     /**

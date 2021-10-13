@@ -335,7 +335,7 @@ public class ApptHandler {
                 String warningString = "Appointment date must not start or end on weekends.";
                 errors.add(warningString);
             }
-            else if (Main.schedule.doesApptOverlap(startDate, endDate, cust_id)) {
+            else if (Main.schedule.doesApptOverlap(startDate, endDate, cust_id, appt_id)) {
                 inputValid = false;
                 String warningString = "Appointment date must not overlap with existing appointments.";
                 errors.add(warningString);
